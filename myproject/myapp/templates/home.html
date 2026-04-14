@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkNova | Smart Parking Finder System</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="{%static 'css/home-style.css' %}">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header>
+    <nav class="navbar">
+        <h2 class="logo">🚗 ParkNova</h2>
+
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/features">Features</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="contact">Contacts</a></li>
+
+           
+        </ul>
+
+        <button class="btn"  onclick="window.location.href='/login/'">Get Started</button>
+    </nav>
+</header>
+
+<!-- ================= HERO SECTION ================= -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Find Parking in Seconds 🚀</h1>
+        <p>Real-time smart parking system to save your time & fuel.</p>
+
+        
+    </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section class="features">
+    <h2>Why Choose Us?</h2>
+
+    <div class="feature-container">
+
+        <div class="card">
+            <h3>📍 Live Location</h3>
+            <p>Find nearby parking spots instantly with real-time tracking.</p>
+        </div>
+
+        <div class="card">
+            <h3>⚡ Instant Booking</h3>
+            <p>Reserve your parking slot in seconds without hassle.</p>
+        </div>
+
+        <div class="card">
+            <h3>💰 Affordable</h3>
+            <p>Compare prices and choose the best parking option.</p>
+        </div>
+
+    </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="steps">
+    <h2>How It Works</h2>
+
+    <div class="step-container">
+        <div class="step">1️⃣ Search Location</div>
+        <div class="step">2️⃣ Select Parking</div>
+        <div class="step">3️⃣ Book Slot</div>
+    </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+    <div class="footer-content">
+        <h3>🚗 ParkEasy</h3>
+        <p>Smart Parking Solution for Smart Cities</p>
+
+        <div class="socials">
+            <span>🌐</span>
+            <span>📧</span>
+            <span>📱</span>
+        </div>
+
+        <p class="copy">© 2026 ParkEasy. All Rights Reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,215 @@
+/* ================= ROOT ================= */
+:root {
+    --primary: #007bff;
+    --primary-dark: #0056b3;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #f4f7fb;
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 8%;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 22px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+}
+
+.nav-links li {
+    margin: 0 18px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 500;
+    position: relative;
+}
+
+/* smooth underline */
+.nav-links a::after {
+    content: "";
+    width: 0%;
+    height: 2px;
+    background: var(--primary);
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* CTA button */
+.btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+/* HERO */
+.hero {
+    height: 90vh;
+    background: url("/static/img/about-image.jpg") center/cover;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+}
+
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7));
+}
+
+.hero-content {
+    position: relative;
+    max-width: 700px;
+}
+
+.hero h1 {
+    font-size: 45px;
+}
+
+/* ABOUT */
+.about-section {
+    padding: 80px 8%;
+}
+
+.about-container {
+    display: flex;
+    gap: 30px;
+}
+
+.about-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    flex: 1;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+/* STATS */
+.stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 60px;
+}
+
+.stat-card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    width: 25%;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+/* TEAM */
+.team {
+    padding: 80px 8%;
+    text-align: center;
+}
+
+.team-container {
+    display: flex;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.member {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    flex: 1;
+    transition: 0.3s;
+}
+
+.member:hover {
+    transform: translateY(-10px);
+}
+
+.member img {
+    width: 100px;
+    border-radius: 50%;
+}
+
+.member span {
+    color: gray;
+}
+
+
+
+/* STEPS */
+.steps {
+    padding: 60px 8%;
+    background: #007bff;
+    color: white;
+    text-align: center;
+}
+
+.step-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.step {
+    font-size: 20px;
+}
+
+/* FOOTER */
+footer {
+    background: #222;
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+.socials span {
+    margin: 10px;
+    font-size: 20px;
+}
