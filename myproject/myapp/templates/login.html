@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,145 +13,130 @@
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
-<header>
-    <nav class="navbar">
-        <h2 class="logo">🚗 ParkNova</h2>
+    {% include 'navbar.html' %}
+    <!-- AUTH SECTION -->
+    <section class="auth-container">
+        <div class="auth-box">
 
-        <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/features">Features</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="#">Pricing</a></li>
-            <li><a href="/contact">Contacts</a></li>
+            <!-- LOGIN -->
+            <div id="loginForm">
+                <h2>Login</h2>
+                <input type="email" placeholder="Email">
+                <input type="password" placeholder="Password">
 
-           
-        </ul>
+                <p class="forgot-link" onclick="showForgot()">Forgot Password?</p>
 
-        <button class="btn"  onclick="window.location.href='/login/'">Get Started</button>
-    </nav>
-</header>
+                <button>Login</button>
+                <p class="toggle-text" onclick="showSignup()">Don't have an account? Sign Up</p>
+            </div>
 
+            <!-- SIGNUP -->
+            <div id="signupForm" style="display:none;">
+                <h2>Sign Up</h2>
+                <input type="text" placeholder="Full Name">
+                <input type="email" placeholder="Email" id="signupEmail">
+                <input type="password" placeholder="Password">
 
-<!-- AUTH SECTION -->
-<section class="auth-container">
-    <div class="auth-box">
+                <button onclick="sendOTP()">Create Account</button>
+                <p class="toggle-text" onclick="showLogin()">Already have an account? Login</p>
+            </div>
 
-        <!-- LOGIN -->
-        <div id="loginForm">
-            <h2>Login</h2>
-            <input type="email" placeholder="Email">
-            <input type="password" placeholder="Password">
+            <!-- FORGOT PASSWORD -->
+            <div id="forgotForm" style="display:none;">
+                <h2>Reset Password</h2>
+                <input type="email" placeholder="Enter your email" id="forgotEmail">
 
-            <p class="forgot-link" onclick="showForgot()">Forgot Password?</p>
+                <button onclick="sendOTP()">Send OTP</button>
+                <p class="toggle-text" onclick="showLogin()">Back to Login</p>
+            </div>
 
-            <button>Login</button>
-            <p class="toggle-text" onclick="showSignup()">Don't have an account? Sign Up</p>
+            <!-- OTP -->
+            <div id="otpForm" style="display:none;">
+                <h2>Verify OTP</h2>
+                <input type="text" placeholder="Enter OTP" id="otpInput">
+
+                <button onclick="verifyOTP()">Verify OTP</button>
+                <p class="toggle-text" onclick="showLogin()">Back to Login</p>
+            </div>
+
         </div>
+    </section>
 
-        <!-- SIGNUP -->
-        <div id="signupForm" style="display:none;">
-            <h2>Sign Up</h2>
-            <input type="text" placeholder="Full Name">
-            <input type="email" placeholder="Email" id="signupEmail">
-            <input type="password" placeholder="Password">
+    <!-- ================= HOW IT WORKS ================= -->
+    <section class="steps">
+        <h2>How It Works</h2>
 
-            <button onclick="sendOTP()">Create Account</button>
-            <p class="toggle-text" onclick="showLogin()">Already have an account? Login</p>
+        <div class="step-container">
+            <div class="step">1️⃣ Search Location</div>
+            <div class="step">2️⃣ Select Parking</div>
+            <div class="step">3️⃣ Book Slot</div>
         </div>
+    </section>
 
-        <!-- FORGOT PASSWORD -->
-        <div id="forgotForm" style="display:none;">
-            <h2>Reset Password</h2>
-            <input type="email" placeholder="Enter your email" id="forgotEmail">
+    <!-- ================= FOOTER ================= -->
+    <footer>
+        <div class="footer-content">
+            <h3>🚗 ParkEasy</h3>
+            <p>Smart Parking Solution for Smart Cities</p>
 
-            <button onclick="sendOTP()">Send OTP</button>
-            <p class="toggle-text" onclick="showLogin()">Back to Login</p>
+            <div class="socials">
+                <span>🌐</span>
+                <span>📧</span>
+                <span>📱</span>
+            </div>
+
+            <p class="copy">© 2026 ParkEasy. All Rights Reserved.</p>
         </div>
+    </footer>
 
-        <!-- OTP -->
-        <div id="otpForm" style="display:none;">
-            <h2>Verify OTP</h2>
-            <input type="text" placeholder="Enter OTP" id="otpInput">
+    <!-- JS -->
+    <script>
+        let generatedOTP = "";
 
-            <button onclick="verifyOTP()">Verify OTP</button>
-            <p class="toggle-text" onclick="showLogin()">Back to Login</p>
-        </div>
+        // Hide all forms
+        function hideAll() {
+            document.getElementById("loginForm").style.display = "none";
+            document.getElementById("signupForm").style.display = "none";
+            document.getElementById("forgotForm").style.display = "none";
+            document.getElementById("otpForm").style.display = "none";
+        }
 
-    </div>
-</section>
+        // Show forms
+        function showSignup() {
+            hideAll();
+            document.getElementById("signupForm").style.display = "block";
+        }
 
-<!-- STEPS -->
-<section class="steps">
-    <h2>How It Works</h2>
-    <div class="step-container">
-        <div class="step">1️⃣ Search Location</div>
-        <div class="step">2️⃣ Select Parking</div>
-        <div class="step">3️⃣ Book Slot</div>
-    </div>
-</section>
+        function showLogin() {
+            hideAll();
+            document.getElementById("loginForm").style.display = "block";
+        }
 
-<!-- FOOTER -->
-<footer>
-    <h3>🚗 ParkEasy</h3>
-    <p>Smart Parking Solution for Smart Cities</p>
+        function showForgot() {
+            hideAll();
+            document.getElementById("forgotForm").style.display = "block";
+        }
 
-    <div class="socials">
-        <span>🌐</span>
-        <span>📧</span>
-        <span>📱</span>
-    </div>
+        // OTP
+        function sendOTP() {
+            generatedOTP = Math.floor(1000 + Math.random() * 9000);
+            alert("Your OTP is: " + generatedOTP); // demo
+            hideAll();
+            document.getElementById("otpForm").style.display = "block";
+        }
 
-    <p>© 2026 ParkEasy. All Rights Reserved.</p>
-</footer>
+        function verifyOTP() {
+            let userOTP = document.getElementById("otpInput").value;
 
-<!-- JS -->
-<script>
-    let generatedOTP = "";
-
-// Hide all forms
-function hideAll() {
-    document.getElementById("loginForm").style.display = "none";
-    document.getElementById("signupForm").style.display = "none";
-    document.getElementById("forgotForm").style.display = "none";
-    document.getElementById("otpForm").style.display = "none";
-}
-
-// Show forms
-function showSignup() {
-    hideAll();
-    document.getElementById("signupForm").style.display = "block";
-}
-
-function showLogin() {
-    hideAll();
-    document.getElementById("loginForm").style.display = "block";
-}
-
-function showForgot() {
-    hideAll();
-    document.getElementById("forgotForm").style.display = "block";
-}
-
-// OTP
-function sendOTP() {
-    generatedOTP = Math.floor(1000 + Math.random() * 9000);
-    alert("Your OTP is: " + generatedOTP); // demo
-    hideAll();
-    document.getElementById("otpForm").style.display = "block";
-}
-
-function verifyOTP() {
-    let userOTP = document.getElementById("otpInput").value;
-
-    if (userOTP == generatedOTP) {
-        alert("OTP Verified ✅");
-        showLogin();
-    } else {
-        alert("Invalid OTP ❌");
-    }
-}
-</script>
+            if (userOTP == generatedOTP) {
+                alert("OTP Verified ✅");
+                showLogin();
+            } else {
+                alert("Invalid OTP ❌");
+            }
+        }
+    </script>
 
 </body>
+
 </html>

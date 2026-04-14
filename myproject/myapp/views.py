@@ -15,3 +15,5 @@ def contact(request):
 
 def login(request):
     return render(request,"login.html")
+def navbar(request):
+    return render(request,"navbar.html")
