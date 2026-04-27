@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - ParkNova</title>
+    <title>OTP Verification</title>
     <link rel="stylesheet" href="{% static 'css/login-style.css' %}">
 </head>
 <body>
@@ -13,24 +13,17 @@
 
 <section class="auth-container">
     <div class="auth-box">
-        <h2>Login</h2>
-
-        {% if error %}
-        <p class="error">{{ error }}</p>
-        {% endif %}
+        <h2>Verify OTP</h2>
 
         <form method="POST">
             {% csrf_token %}
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
+            <input type="text" name="otp" placeholder="Enter OTP" required>
 
-            <button type="submit">Login</button>
+            <button type="submit">Verify OTP</button>
         </form>
 
-        <a href="/forgot/" class="link">Forgot Password?</a>
-
         <p class="toggle-text">
-            Don't have an account? <a href="/signup/">Sign Up</a>
+            <a href="/login/">Back to Login</a>
         </p>
     </div>
 </section>

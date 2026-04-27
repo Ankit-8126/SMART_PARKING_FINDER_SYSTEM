@@ -1,134 +1,159 @@
+:root {
+    --primary: #007bff;
+    --primary-dark: #0056b3;
+    --bg: #f4f7fb;
+}
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--bg);
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 8%;
+    background: #222;
+    color: white;
+}
+
+.logo {
+    font-size: 22px;
+}
+
+.nav-links a {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+}
 
 /* ================= AUTH SECTION ================= */
 .auth-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 80px 8%;
-    background: #f4f7fb;
+    height: calc(100vh - 70px);
+    padding: 20px;
 }
 
+/* CARD */
 .auth-box {
     background: white;
     padding: 30px;
     width: 350px;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    animation: fadeIn 0.4s ease-in-out;
 }
 
+/* TITLE */
 .auth-box h2 {
     text-align: center;
     margin-bottom: 20px;
     color: var(--primary);
 }
 
+/* INPUT */
 .auth-box input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin: 10px 0;
-    border-radius: 5px;
+    border-radius: 6px;
     border: 1px solid #ccc;
+    outline: none;
+    transition: 0.3s;
 }
 
+.auth-box input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 5px rgba(0,123,255,0.3);
+}
+
+/* BUTTON */
 .auth-box button {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     background: var(--primary);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
 }
 
 .auth-box button:hover {
     background: var(--primary-dark);
 }
 
-.toggle-text {
-    text-align: center;
-    margin-top: 15px;
-    color: var(--primary);
-    cursor: pointer;
-}
-
-/* FORGOT */
-.forgot-link {
+/* LINKS */
+.link {
+    display: block;
     text-align: right;
     font-size: 14px;
+    margin-top: 5px;
     color: var(--primary);
-    cursor: pointer;
+    text-decoration: none;
 }
 
-.forgot-link:hover {
+.link:hover {
     text-decoration: underline;
 }
 
-/* OTP */
-#otpInput {
+/* TOGGLE TEXT */
+.toggle-text {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.toggle-text a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.toggle-text a:hover {
+    text-decoration: underline;
+}
+
+/* ERROR MESSAGE */
+.error {
+    color: red;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* OTP INPUT */
+.auth-box input[name="otp"] {
     text-align: center;
     font-size: 18px;
     letter-spacing: 5px;
 }
 
-/* ================= STEPS ================= */
-.steps {
-    padding: 60px 8%;
-    background: #007bff;
-    color: white;
-    text-align: center;
-}
-
-.step-container {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 30px;
-    flex-wrap: wrap;
-}
-
-.step {
-    font-size: 20px;
-}
-
-/* ================= FOOTER ================= */
-footer {
-    background: #222;
-    color: white;
-    padding: 30px;
-    text-align: center;
-}
-
-.socials span {
-    margin: 10px;
-    font-size: 20px;
-}
-
-/* STEPS */
-.steps {
-    padding: 60px 8%;
-    background: #007bff;
-    color: white;
-    text-align: center;
-}
-
-.step-container {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 30px;
-}
-
-.step {
-    font-size: 20px;
-}
-
-/* FOOTER */
-footer {
-    background: #222;
-    color: white;
-    padding: 30px;
-    text-align: center;
-}
-
-.socials span {
-    margin: 10px;
-    font-size: 20px;
+/* ================= ANIMATION ================= */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

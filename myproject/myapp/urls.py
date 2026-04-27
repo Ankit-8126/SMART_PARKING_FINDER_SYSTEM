@@ -7,5 +7,10 @@ urlpatterns = [
     path('features/',views.features),
     path('contact/',views.contact),
     path('login/',views.login),
-    path('navbar/',views.navbar)
+    path('navbar/',views.navbar),
+    path('signup/',views.signup),
+    path('forgot/',views.forgot),
+    path('otp/',views.otp),
+    path('footer/',views.footer),
+
 ]
