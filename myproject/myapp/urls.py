@@ -12,5 +12,6 @@ urlpatterns = [
     path('forgot/',views.forgot),
     path('otp/',views.otp),
     path('footer/',views.footer),
+    path('mydashboard/',views.mydashboard),
 
 ]

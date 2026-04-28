@@ -39,7 +39,7 @@ def signup(request):
         )
         user.save()
 
-        return redirect('/login/')
+        return redirect('/mydashboard/')
 
     return render(request, 'signup.html')
 
@@ -54,3 +54,6 @@ def navbar(request):
 
 def footer(request):
     return render(request, "footer.html")
+
+def mydashboard(request):
+    return render(request,"mydashboard.html")
