@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from .models import UserProfile
-
-
+from django.contrib.auth import authenticate,login as auth_login
+from django.contrib import messages
 def home(request):
     return render(request, "home.html")
 
@@ -16,6 +16,19 @@ def contact(request):
     return render(request, "contact.html")
 
 def login(request):
+    if request.method=='POST':
+        email=request.POST.get("email")
+        password=request.POST.get("password")
+        
+        user=authenticate(request,username=email,password=password)
+        
+        if user is not None:
+            auth_login
+            auth_login(request,user)
+            return redirect('/mydashboard/')
+        else:
+            messages.error(request,"Invalid Email and Password")
+    
     return render(request, "login.html")
 
 def signup(request):
