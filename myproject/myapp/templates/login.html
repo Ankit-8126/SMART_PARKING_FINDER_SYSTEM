@@ -27,10 +27,10 @@
             <button type="submit">Login</button>
         </form>
 
-        <a href="/forgot/" class="link">Forgot Password?</a>
+        <a href="{% url 'forgot' %}" class="link">Forgot Password?</a>
 
         <p class="toggle-text">
-            Don't have an account? <a href="/signup/">Sign Up</a>
+            Don't have an account? <a href="{% url 'signup' %}">Sign Up</a>
         </p>
     </div>
 </section>

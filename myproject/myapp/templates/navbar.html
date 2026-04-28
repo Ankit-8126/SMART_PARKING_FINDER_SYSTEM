@@ -21,19 +21,18 @@
         <nav class="navbar">
             <h2 class="logo">🚗 ParkNova</h2>
 
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/features/">Features</a></li>
-                <li><a href="/about/">About</a></li>
-                <li><a href="#">Pricing</a></li>
-                <li><a href="/contact/">Contacts</a></li>
-
+             <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'features' %}">Features</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="{% url 'contact' %}">Contacts</a></li>
 
             </ul>
 
-           <button class="btn" onclick="window.location.href='/login/'">
-            Get Started
-        </button>
+           <button class="btn" onclick="window.location.href='{% url 'login' %}'">
+             Get Started
+       </button>
         </nav>
     </header>
 </body>
