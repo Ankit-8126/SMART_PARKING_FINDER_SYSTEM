@@ -13,5 +13,6 @@ urlpatterns = [
     path('otp/',views.otp,name='otp'),
     path('footer/',views.footer,name='footer'),
     path('mydashboard/',views.mydashboard,name='mydashboard'),
+    path('logout/', views.logout, name='logout')
 
 ]
