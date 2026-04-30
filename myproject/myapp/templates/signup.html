@@ -1,36 +1,47 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup - ParkNova</title>
+    <title>Sign Up</title>
+
+    <!-- Same CSS as login -->
     <link rel="stylesheet" href="{% static 'css/login-style.css' %}">
 </head>
 <body>
 
 {% include 'navbar.html' %}
 
+<!-- AUTH SECTION -->
 <section class="auth-container">
     <div class="auth-box">
-        <h2>Sign Up</h2>
 
-        {% if error %}
-        <p class="error">{{ error }}</p>
-        {% endif %}
+        <h2>Create Account</h2>
 
         <form method="POST">
             {% csrf_token %}
+
             <input type="text" name="name" placeholder="Full Name" required>
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
 
-            <button type="submit">Create Account</button>
+            <button type="submit">Sign Up</button>
         </form>
 
+        <!-- Success message -->
+        {% if message %}
+            <p style="color:green; text-align:center;">{{ message }}</p>
+        {% endif %}
+
+        <!-- Error message -->
+        {% if error %}
+            <p style="color:red; text-align:center;">{{ error }}</p>
+        {% endif %}
+
         <p class="toggle-text">
-            Already have an account? <a href="{% url 'login' %}">Login</a>
+            Already have an account?
+            <a href="{% url 'login' %}">Login</a>
         </p>
+
     </div>
 </section>
 

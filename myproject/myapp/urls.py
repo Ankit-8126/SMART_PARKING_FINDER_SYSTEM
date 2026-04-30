@@ -9,10 +9,14 @@ urlpatterns = [
     path('login/',views.login,name='login'),
     path('navbar/',views.navbar,name='navbar'),
     path('signup/',views.signup,name='signup'),
-    path('forgot/',views.forgot,name='forgot'),
-    path('otp/',views.otp,name='otp'),
+    path('activate/<uidb64>/<token>/', views.activate, name='activate'),
     path('footer/',views.footer,name='footer'),
     path('mydashboard/',views.mydashboard,name='mydashboard'),
-    path('logout/', views.logout, name='logout')
+    path('logout/', views.logout, name='logout'),
+
+    path('forgot/', views.forgot, name='forgot'),
+    path('reset/<uidb64>/<token>/', views.reset_password, name='reset_password'),
+
+
 
 ]

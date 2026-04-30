@@ -1,0 +1,16 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/login-style.css' %}">
+
+<div class="auth-container">
+    <div class="auth-box">
+
+        <h2>Reset Password</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="password" name="password" placeholder="New Password" required>
+            <button type="submit">Update Password</button>
+        </form>
+
+    </div>
+</div>
