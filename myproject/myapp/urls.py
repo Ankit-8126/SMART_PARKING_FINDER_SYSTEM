@@ -16,7 +16,9 @@ urlpatterns = [
 
     path('forgot/', views.forgot, name='forgot'),
     path('reset/<uidb64>/<token>/', views.reset_password, name='reset_password'),
-
+    path('nav2/',views.nav2,name='nav2'),
+    path('find-parking/', views.find_parking, name='find_parking'),
+    path('my-bookings/', views.my_bookings, name='my_bookings'),
 
 
 ]

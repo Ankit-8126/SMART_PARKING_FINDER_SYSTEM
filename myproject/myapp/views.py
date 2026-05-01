@@ -210,3 +210,11 @@ def navbar(request):
 
 def footer(request):
     return render(request, "footer.html")
+def nav2(request):
+    return render(request, "nav2.html")
+
+def find_parking(request):
+    return render(request, "find_parking.html")
+
+def my_bookings(request):
+    return render(request, "my_bookings.html")
