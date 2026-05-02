@@ -1,14 +1,90 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Find Parking Page</title>
+    <title>Find Parking</title>
+
+    <link rel="stylesheet" href="{% static 'css/find_parking-style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
+
 {% include 'nav2.html' %}
 
-<h2>This is My Find Parking Page</h2>
+<div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div>
+            <h2>Find Parking</h2>
+            <p>Browse and book available parking spaces</p>
+        </div>
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+        <input type="text" placeholder="Search by location...">
+
+        <select>
+            <option>All Locations</option>
+            <option>Agra</option>
+        </select>
+
+        <select>
+            <option>Any Price</option>
+            <option>Below ₹50</option>
+        </select>
+
+        <button>Search</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="list">
+
+        <!-- CARD -->
+        <div class="parking-card">
+
+            <div class="info">
+                <h3>City Mall Parking</h3>
+                <p><i class="fas fa-location-dot"></i> Agra</p>
+
+                <span class="badge green">Available</span>
+                <span class="slots">12 slots</span>
+            </div>
+
+            <div class="meta">
+                <h3>₹50/hr</h3>
+                <a href="#" class="btn">Book Now</a>
+            </div>
+
+        </div>
+
+        <div class="parking-card">
+
+            <div class="info">
+                <h3>Railway Parking</h3>
+                <p><i class="fas fa-location-dot"></i> Agra Cantt</p>
+
+                <span class="badge yellow">Limited</span>
+                <span class="slots">5 slots</span>
+            </div>
+
+            <div class="meta">
+                <h3>₹30/hr</h3>
+                <a href="#" class="btn">Book Now</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 {% include 'footer.html' %}
+
 </body>
 </html>

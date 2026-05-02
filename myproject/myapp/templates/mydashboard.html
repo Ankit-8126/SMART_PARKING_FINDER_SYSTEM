@@ -6,6 +6,10 @@
 
     <link rel="stylesheet" href="{% static 'css/mydashboard-style.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
@@ -16,56 +20,60 @@
     <!-- Welcome -->
     <div class="welcome">
         <h2>Welcome back, {{ request.user.first_name }} 👋</h2>
-        <p>Manage your parking smarter & faster</p>
+        <p>Your smart parking dashboard</p>
     </div>
 
     <!-- Quick Actions -->
     <div class="actions">
-        <a href="{% url 'find_parking' %}" class="btn primary">🔍 Find Parking</a>
-        <a href="{% url 'my_bookings' %}" class="btn secondary">📅 My Bookings</a>
+        <a href="{% url 'find_parking' %}" class="btn primary">
+            <i class="fas fa-search"></i> Find Parking
+        </a>
+
+        <a href="{% url 'my_bookings' %}" class="btn secondary">
+            <i class="fas fa-calendar"></i> My Bookings
+        </a>
     </div>
 
     <!-- Stats -->
     <div class="stats">
-        <div class="stat-card">
+        <div class="stat-card blue">
+            <i class="fas fa-calendar-check"></i>
             <h3>12</h3>
             <p>Total Bookings</p>
         </div>
 
-        <div class="stat-card">
+        <div class="stat-card green">
+            <i class="fas fa-car"></i>
             <h3>5</h3>
             <p>Active Slots</p>
         </div>
 
-        <div class="stat-card">
+        <div class="stat-card purple">
+            <i class="fas fa-wallet"></i>
             <h3>₹1200</h3>
             <p>Total Spent</p>
         </div>
     </div>
 
-    <!-- Parking Cards -->
-    <h3 class="section-title">Available Parking</h3>
+    <!-- Parking Section -->
+    <div class="section-header">
+        <h3>Nearby Parking</h3>
+        <a href="{% url 'find_parking' %}" class="view-all">View All →</a>
+    </div>
 
     <div class="cards">
         <div class="card">
             <h4>City Mall Parking</h4>
             <p>📍 Agra</p>
             <span>₹50/hr</span>
-            <button>Book Now</button>
+            <a href="#" class="book-btn">Book Now</a>
         </div>
 
         <div class="card">
             <h4>Railway Parking</h4>
             <p>📍 Agra Cantt</p>
             <span>₹30/hr</span>
-            <button>Book Now</button>
-        </div>
-
-        <div class="card">
-            <h4>Airport Parking</h4>
-            <p>📍 Kheria</p>
-            <span>₹70/hr</span>
-            <button>Book Now</button>
+            <a href="#" class="book-btn">Book Now</a>
         </div>
     </div>
 
