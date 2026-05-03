@@ -20,5 +20,9 @@ urlpatterns = [
     path('find-parking/', views.find_parking, name='find_parking'),
     path('my-bookings/', views.my_bookings, name='my_bookings'),
 
+    path('my-profile/', views.my_profile, name='my_profile'),
+
+    path('settings/', views.settings, name='settings'),
+
 
 ]

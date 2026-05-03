@@ -1,14 +1,100 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>My Booking Page</title>
+    <title>My Bookings</title>
+
+    <link rel="stylesheet" href="{% static 'css/my_bookings-style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
+
 {% include 'nav2.html' %}
 
-<h2>This is My Booking Page</h2>
+<div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h2>My Bookings</h2>
+        <p>Manage and track your parking bookings</p>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary">
+        <div class="box">
+            <h3>12</h3>
+            <p>Total Bookings</p>
+        </div>
+
+        <div class="box">
+            <h3>5</h3>
+            <p>Active</p>
+        </div>
+
+        <div class="box">
+            <h3>7</h3>
+            <p>Completed</p>
+        </div>
+    </div>
+
+    <!-- BOOKINGS LIST -->
+    <div class="list">
+
+        <!-- CARD -->
+        <div class="booking-card">
+
+            <div class="info">
+                <h3>City Mall Parking</h3>
+                <p><i class="fas fa-location-dot"></i> Agra</p>
+                <p><i class="fas fa-clock"></i> 10:30 AM - 12:30 PM</p>
+            </div>
+
+            <div class="status">
+                <span class="badge green">Active</span>
+            </div>
+
+            <div class="actions">
+                <a href="#" class="view-btn">View</a>
+                <a href="#" class="cancel-btn">Cancel</a>
+            </div>
+
+        </div>
+
+        <div class="booking-card">
+
+            <div class="info">
+                <h3>Railway Parking</h3>
+                <p><i class="fas fa-location-dot"></i> Agra Cantt</p>
+                <p><i class="fas fa-clock"></i> 08:00 AM - 09:00 AM</p>
+            </div>
+
+            <div class="status">
+                <span class="badge gray">Completed</span>
+            </div>
+
+            <div class="actions">
+                <a href="#" class="view-btn">View</a>
+            </div>
+
+        </div>
+
+        <!-- EMPTY STATE -->
+        <!--
+        <div class="empty">
+            <p>No bookings yet 😕</p>
+            <a href="{% url 'find_parking' %}">Book Now</a>
+        </div>
+        -->
+
+    </div>
+
+</div>
 
 {% include 'footer.html' %}
+
 </body>
 </html>

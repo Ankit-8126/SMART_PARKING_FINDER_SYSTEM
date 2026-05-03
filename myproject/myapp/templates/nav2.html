@@ -31,8 +31,8 @@
         <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-icon">
 
         <div class="dropdown">
-            <a href="#">My Profile</a>
-            <a href="#">Settings</a>
+            <a href="{% url 'my_profile' %}">My Profile</a>
+            <a href="{% url 'settings' %}">Settings</a>
             <a href="{% url 'logout' %}">Logout</a>
         </div>
     </div>

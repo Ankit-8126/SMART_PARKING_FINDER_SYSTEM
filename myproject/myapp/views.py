@@ -8,7 +8,6 @@ from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.contrib.auth.tokens import default_token_generator
-
 # Email validation
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
@@ -213,8 +212,20 @@ def footer(request):
 def nav2(request):
     return render(request, "nav2.html")
 
+@login_required(login_url='login')
 def find_parking(request):
     return render(request, "find_parking.html")
 
+
+@login_required(login_url='login')
 def my_bookings(request):
     return render(request, "my_bookings.html")
+
+@login_required(login_url='login')
+def my_profile(request):
+    return render(request, "my_profile.html")
+
+@login_required(login_url='login')
+def settings(request):
+    return render(request, "settings.html")
+

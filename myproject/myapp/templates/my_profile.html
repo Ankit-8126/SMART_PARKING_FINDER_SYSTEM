@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Profile</title>
+
+    <link rel="stylesheet" href="{% static 'css/my_profile-style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+{% include 'nav2.html' %}
+
+<div class="container">
+
+    <!-- PROFILE HEADER -->
+    <div class="profile-header">
+
+        <div class="avatar">
+            {{ request.user.first_name|slice:":1" }}
+        </div>
+
+        <div>
+            <h2>{{ request.user.first_name }}</h2>
+            <p>{{ request.user.email }}</p>
+        </div>
+
+    </div>
+
+    <!-- STATS CARDS -->
+    <div class="cards">
+
+        <div class="card">
+            <h4>Total Bookings</h4>
+            <h2>12</h2>
+        </div>
+
+        <div class="card">
+            <h4>Active Bookings</h4>
+            <h2>3</h2>
+        </div>
+
+        <div class="card">
+            <h4>Total Spent</h4>
+            <h2>₹850</h2>
+        </div>
+
+    </div>
+
+    <!-- DETAILS TABLE STYLE -->
+    <div class="table-section">
+
+        <h3>Account Details</h3>
+
+        <table>
+
+            <tr>
+                <td>Name</td>
+                <td>{{ request.user.first_name }}</td>
+            </tr>
+
+            <tr>
+                <td>Email</td>
+                <td>{{ request.user.email }}</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% include 'footer.html' %}
+
+</body>
+</html>
