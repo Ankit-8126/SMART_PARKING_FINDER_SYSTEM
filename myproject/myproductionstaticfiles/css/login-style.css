@@ -1,39 +1,53 @@
+/* 🔥 RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-/* ================= AUTH SECTION ================= */
+/* 🌍 BODY */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(120deg, #4facfe, #00f2fe);
+}
+
+/* 📦 CONTAINER */
 .auth-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 80px 8%;
-    background: #f4f7fb;
+    height: 90vh;
 }
 
+/* 🧾 BOX */
 .auth-box {
-    background: white;
+    background: #fff;
     padding: 30px;
     width: 350px;
     border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-}
-
-.auth-box h2 {
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
     text-align: center;
-    margin-bottom: 20px;
-    color: var(--primary);
 }
 
+/* 📝 TITLE */
+.auth-box h2 {
+    margin-bottom: 20px;
+}
+
+/* 🔡 INPUTS */
 .auth-box input {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
-    border-radius: 5px;
     border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
+/* 🔘 BUTTON */
 .auth-box button {
     width: 100%;
     padding: 10px;
-    background: var(--primary);
+    background: #4facfe;
     color: white;
     border: none;
     border-radius: 5px;
@@ -41,94 +55,41 @@
 }
 
 .auth-box button:hover {
-    background: var(--primary-dark);
+    background: #007bff;
 }
 
-.toggle-text {
-    text-align: center;
-    margin-top: 15px;
-    color: var(--primary);
-    cursor: pointer;
+/* 🔗 LINKS */
+.auth-box a {
+    color: #007bff;
+    text-decoration: none;
 }
 
-/* FORGOT */
-.forgot-link {
-    text-align: right;
-    font-size: 14px;
-    color: var(--primary);
-    cursor: pointer;
-}
-
-.forgot-link:hover {
+.auth-box a:hover {
     text-decoration: underline;
 }
 
-/* OTP */
-#otpInput {
-    text-align: center;
-    font-size: 18px;
-    letter-spacing: 5px;
+/* 🚨 ALERT MESSAGES */
+.alert {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
 }
 
-/* ================= STEPS ================= */
-.steps {
-    padding: 60px 8%;
-    background: #007bff;
-    color: white;
-    text-align: center;
+/* SUCCESS */
+.alert.success {
+    background: #d4edda;
+    color: #155724;
 }
 
-.step-container {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 30px;
-    flex-wrap: wrap;
+/* ERROR */
+.alert.error {
+    background: #f8d7da;
+    color: #721c24;
 }
 
-.step {
-    font-size: 20px;
-}
-
-/* ================= FOOTER ================= */
-footer {
-    background: #222;
-    color: white;
-    padding: 30px;
-    text-align: center;
-}
-
-.socials span {
-    margin: 10px;
-    font-size: 20px;
-}
-
-/* STEPS */
-.steps {
-    padding: 60px 8%;
-    background: #007bff;
-    color: white;
-    text-align: center;
-}
-
-.step-container {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 30px;
-}
-
-.step {
-    font-size: 20px;
-}
-
-/* FOOTER */
-footer {
-    background: #222;
-    color: white;
-    padding: 30px;
-    text-align: center;
-}
-
-.socials span {
-    margin: 10px;
-    font-size: 20px;
+/* WARNING */
+.alert.warning {
+    background: #fff3cd;
+    color: #856404;
 }
