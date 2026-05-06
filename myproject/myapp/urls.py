@@ -17,12 +17,18 @@ urlpatterns = [
     path('forgot/', views.forgot, name='forgot'),
     path('reset/<uidb64>/<token>/', views.reset_password, name='reset_password'),
     path('nav2/',views.nav2,name='nav2'),
-    path('find-parking/', views.find_parking, name='find_parking'),
+
     path('my-bookings/', views.my_bookings, name='my_bookings'),
 
     path('my-profile/', views.my_profile, name='my_profile'),
 
     path('settings/', views.settings, name='settings'),
+
+    path('find-parking/', views.find_parking_page,name='find_parking'),
+    path('api/nearby-parkings/', views.nearby_parkings,name='nearby_parkings'),
+    path('api/book-parking/', views.book_parking,name='book_parking'),
+    path('api/booking-history/', views.booking_history,name='booking_history'),
+    path('all-parking/', views.all_parking, name='all_parking'),
 
 
 ]

@@ -5,86 +5,89 @@
     <title>Find Parking</title>
 
     <link rel="stylesheet" href="{% static 'css/find_parking-style.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
 {% include 'nav2.html' %}
 
-<div class="page">
+<div class="container">
 
-    <!-- HEADER -->
-    <div class="header">
-        <div>
-            <h2>Find Parking</h2>
-            <p>Browse and book available parking spaces</p>
-        </div>
+    <!-- TOP BAR -->
+    <div class="topbar">
+        <h2>🚗 Find Parking Near You</h2>
+
+        <button class="btn" onclick="getLocation()">
+            📍 My Location
+        </button>
     </div>
 
-    <!-- TOOLBAR -->
-    <div class="toolbar">
-        <input type="text" placeholder="Search by location...">
-
-        <select>
-            <option>All Locations</option>
-            <option>Agra</option>
-        </select>
-
-        <select>
-            <option>Any Price</option>
-            <option>Below ₹50</option>
-        </select>
-
-        <button>Search</button>
+    <!-- SEARCH -->
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search parking..." onkeyup="filterCards()">
     </div>
 
-    <!-- RESULTS -->
-    <div class="list">
+    <!-- LOCATION FORM -->
+    <form method="POST" id="locationForm">
+        {% csrf_token %}
+        <input type="hidden" name="latitude" id="lat">
+        <input type="hidden" name="longitude" id="lng">
+    </form>
 
-        <!-- CARD -->
-        <div class="parking-card">
+    <!-- CARDS -->
+    <div class="grid">
 
-            <div class="info">
-                <h3>City Mall Parking</h3>
-                <p><i class="fas fa-location-dot"></i> Agra</p>
+        {% for p in parkings %}
+        <div class="card">
 
-                <span class="badge green">Available</span>
-                <span class="slots">12 slots</span>
-            </div>
+            <h3 class="name">{{ p.name }}</h3>
 
-            <div class="meta">
-                <h3>₹50/hr</h3>
-                <a href="#" class="btn">Book Now</a>
-            </div>
+            <p class="meta">📍 {{ p.address }}</p>
 
-        </div>
+            <p class="price">₹{{ p.price }} / hr</p>
 
-        <div class="parking-card">
+            <p class="meta">Slots: {{ p.available_slots }}</p>
 
-            <div class="info">
-                <h3>Railway Parking</h3>
-                <p><i class="fas fa-location-dot"></i> Agra Cantt</p>
+            {% if p.distance %}
+                <p class="distance">📍 {{ p.distance }} km away</p>
+            {% else %}
+                <p class="distance">📍 Location not set</p>
+            {% endif %}
 
-                <span class="badge yellow">Limited</span>
-                <span class="slots">5 slots</span>
-            </div>
-
-            <div class="meta">
-                <h3>₹30/hr</h3>
-                <a href="#" class="btn">Book Now</a>
-            </div>
+            <a href="#" class="book-btn">Book Now</a>
 
         </div>
+        {% endfor %}
 
     </div>
 
 </div>
 
 {% include 'footer.html' %}
+
+<script>
+function getLocation(){
+    navigator.geolocation.getCurrentPosition(function(pos){
+
+        document.getElementById("lat").value = pos.coords.latitude;
+        document.getElementById("lng").value = pos.coords.longitude;
+
+        document.getElementById("locationForm").submit();
+    });
+}
+
+function filterCards(){
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(card => {
+        let name = card.querySelector(".name").innerText.toLowerCase();
+
+        card.style.display = name.includes(input) ? "block" : "none";
+    });
+}
+</script>
 
 </body>
 </html>
