@@ -5,7 +5,7 @@
     <title>Find Parking</title>
 
     <link rel="stylesheet" href="{% static 'css/find_parking-style.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -14,52 +14,52 @@
 
 <div class="container">
 
-    <!-- TOP BAR -->
     <div class="topbar">
         <h2>🚗 Find Parking Near You</h2>
 
-        <button class="btn" onclick="getLocation()">
-            📍 My Location
-        </button>
+        <button class="btn" onclick="getLocation()">📍 My Location</button>
     </div>
 
-    <!-- SEARCH -->
     <div class="search-box">
         <input type="text" id="searchInput" placeholder="Search parking..." onkeyup="filterCards()">
     </div>
 
-    <!-- LOCATION FORM -->
+    <!-- Location form -->
     <form method="POST" id="locationForm">
         {% csrf_token %}
         <input type="hidden" name="latitude" id="lat">
         <input type="hidden" name="longitude" id="lng">
     </form>
 
-    <!-- CARDS -->
+    <!-- GRID -->
     <div class="grid">
 
-        {% for p in parkings %}
+        {% for p in parkings|slice:":6" %}
         <div class="card">
 
             <h3 class="name">{{ p.name }}</h3>
-
             <p class="meta">📍 {{ p.address }}</p>
 
             <p class="price">₹{{ p.price }} / hr</p>
-
             <p class="meta">Slots: {{ p.available_slots }}</p>
 
             {% if p.distance %}
                 <p class="distance">📍 {{ p.distance }} km away</p>
             {% else %}
-                <p class="distance">📍 Location not set</p>
+                <p class="distance">📍 Enable location</p>
             {% endif %}
 
-            <a href="#" class="book-btn">Book Now</a>
+            <!-- DETAILS PAGE -->
+            <a href="{% url 'parking_detail' p.id %}" class="book-btn">View Details</a>
 
         </div>
         {% endfor %}
 
+    </div>
+
+    <!-- VIEW ALL -->
+    <div class="view-all">
+        <a href="{% url 'all_parking' %}">View All Parking →</a>
     </div>
 
 </div>
@@ -67,26 +67,39 @@
 {% include 'footer.html' %}
 
 <script>
-function getLocation(){
+function getLocation() {
     navigator.geolocation.getCurrentPosition(function(pos){
-
         document.getElementById("lat").value = pos.coords.latitude;
         document.getElementById("lng").value = pos.coords.longitude;
-
         document.getElementById("locationForm").submit();
     });
 }
 
 function filterCards(){
     let input = document.getElementById("searchInput").value.toLowerCase();
-    let cards = document.querySelectorAll(".card");
-
-    cards.forEach(card => {
+    document.querySelectorAll(".card").forEach(card=>{
         let name = card.querySelector(".name").innerText.toLowerCase();
-
         card.style.display = name.includes(input) ? "block" : "none";
     });
 }
+
+
+
+function bookParking(id){
+    fetch("/api/book-parking/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: JSON.stringify({parking_id: id})
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message || data.error);
+    });
+}
+
 </script>
 
 </body>

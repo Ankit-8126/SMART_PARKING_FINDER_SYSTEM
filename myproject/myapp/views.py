@@ -167,6 +167,8 @@ def logout(request):
 
 # ================= FIND PARKING (FIXED) =================
 
+from .utils import haversine
+
 @login_required(login_url='login')
 def find_parking_page(request):
 
@@ -181,6 +183,7 @@ def find_parking_page(request):
 
         distance = None
 
+        # ✅ only calculate if user location exists
         if user_lat and user_lng:
             try:
                 distance = haversine(
@@ -198,21 +201,12 @@ def find_parking_page(request):
             "address": p.address,
             "price": p.price,
             "available_slots": p.available_slots,
+            "latitude": p.latitude,
+            "longitude": p.longitude,
             "distance": round(distance, 2) if distance else None
         })
 
-    # sort by distance if available
-    data.sort(key=lambda x: x["distance"] if x["distance"] is not None else 9999)
-
     return render(request, "find_parking.html", {"parkings": data})
-
-# ================= MY BOOKINGS =================
-
-@login_required(login_url='login')
-def my_bookings(request):
-    bookings = Booking.objects.filter(user=request.user).order_by('-booked_at')
-    return render(request, "my_bookings.html", {"bookings": bookings})
-
 
 # ================= PROFILE =================
 
@@ -314,20 +308,35 @@ def booking_history(request):
 
     return Response({"bookings": data})
 
-@login_required(login_url='login')
-def all_parking(request):
+def all_parkings(request):
     parkings = Parking.objects.all()
 
-    data = []
-    for p in parkings:
-        data.append({
-            "id": p.id,
-            "name": p.name,
-            "address": p.address,
-            "latitude": p.latitude,
-            "longitude": p.longitude,
-            "available_slots": p.available_slots,
-            "price": p.price
-        })
+    user_lat = request.GET.get("lat")
+    user_lng = request.GET.get("lng")
 
-    return render(request, "all_parking.html", {"parkings": data})
+    if user_lat and user_lng:
+        user_lat = float(user_lat)
+        user_lng = float(user_lng)
+
+        for p in parkings:
+            p.distance = haversine(user_lat, user_lng, p.latitude, p.longitude)
+    else:
+        for p in parkings:
+            p.distance = None
+
+    return render(request, "all_parkings.html", {"parkings": parkings})
+
+from django.contrib.auth.decorators import login_required
+from .models import Booking
+
+@login_required(login_url='login')
+def my_bookings(request):
+    bookings = Booking.objects.filter(user=request.user).order_by('-booked_at')
+    return render(request, "my_bookings.html", {"bookings": bookings})
+
+from django.shortcuts import get_object_or_404
+
+@login_required(login_url='login')
+def parking_detail(request, id):
+    parking = get_object_or_404(Parking, id=id)
+    return render(request, "parking_details.html", {"p": parking})

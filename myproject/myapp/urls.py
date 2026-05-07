@@ -28,7 +28,9 @@ urlpatterns = [
     path('api/nearby-parkings/', views.nearby_parkings,name='nearby_parkings'),
     path('api/book-parking/', views.book_parking,name='book_parking'),
     path('api/booking-history/', views.booking_history,name='booking_history'),
-    path('all-parking/', views.all_parking, name='all_parking'),
+    path('all-parking/', views.all_parkings, name='all_parking'),
+
+    path('parking/<int:id>/', views.parking_detail, name='parking_detail'),
 
 
 ]

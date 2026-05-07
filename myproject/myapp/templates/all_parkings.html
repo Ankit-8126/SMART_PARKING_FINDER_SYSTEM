@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Parking Spaces</title>
+
+    <link rel="stylesheet" href="{% static 'css/all_parkings-style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+{% include 'nav2.html' %}
+
+<div class="container">
+
+    <!-- TOP BAR FIXED -->
+    <div class="topbar">
+
+        <h2>🅿 All Parking Spaces</h2>
+
+        <div class="top-actions">
+
+            <button class="btn" onclick="getLocation()">📍 My Location</button>
+
+            <a href="{% url 'find_parking' %}" class="back-btn">← Back</a>
+
+        </div>
+
+    </div>
+
+    <!-- GRID -->
+    <div class="grid">
+
+        {% for p in parkings %}
+
+        <div class="card">
+
+            <h3 class="name">{{ p.name }}</h3>
+
+            <p class="meta">📍 {{ p.address|default:"Address not available" }}</p>
+
+            <p class="meta">🅿 Slots: {{ p.available_slots }}</p>
+
+            {% if p.distance %}
+                <p class="distance">📍 {{ p.distance|floatformat:2 }} km away</p>
+            {% else %}
+                <p class="distance">📍 Enable location</p>
+            {% endif %}
+
+            <a href="{% url 'parking_detail' p.id %}" class="book-btn">
+                View Details →
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% include 'footer.html' %}
+
+<script>
+function getLocation() {
+    navigator.geolocation.getCurrentPosition(function(pos){
+        let lat = pos.coords.latitude;
+        let lng = pos.coords.longitude;
+        window.location.href = `/all-parking/?lat=${lat}&lng=${lng}`;
+    });
+}
+</script>
+
+</body>
+</html>

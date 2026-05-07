@@ -160,3 +160,48 @@ body {
         width: 100%;
     }
 }
+
+/* ================= SHARED CARD STYLE ================= */
+.book-btn {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    background: linear-gradient(90deg, #2563eb, #1e40af);
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.book-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.03);
+}
+
+/* SAME TEXT STYLES */
+.name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.meta {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 6px;
+}
+
+.price {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2563eb;
+    margin-bottom: 6px;
+}
+
+.distance {
+    font-size: 13px;
+    color: #0f172a;
+    margin-top: 8px;
+}

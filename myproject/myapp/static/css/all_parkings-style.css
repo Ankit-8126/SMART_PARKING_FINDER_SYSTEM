@@ -1,3 +1,4 @@
+
 /* ================= GLOBAL RESET ================= */
 * {
     margin: 0;
@@ -24,9 +25,18 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
+/* 🔥 IMPORTANT FIX */
+.top-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-left: auto;
+}
+
+/* ================= TITLE ================= */
 .topbar h2 {
     font-size: 26px;
     font-weight: 600;
@@ -50,23 +60,19 @@ body {
     opacity: 0.9;
 }
 
-/* ================= SEARCH BOX ================= */
-.search-box {
-    margin-bottom: 20px;
-}
-
-.search-box input {
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: 12px;
-    border: 1px solid #cbd5e1;
-    outline: none;
+/* ================= BACK BUTTON ================= */
+.back-btn {
+    text-decoration: none;
+    background: #e2e8f0;
+    color: #0f172a;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: 500;
     transition: 0.3s;
 }
 
-.search-box input:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+.back-btn:hover {
+    background: #cbd5e1;
 }
 
 /* ================= GRID ================= */
@@ -84,24 +90,11 @@ body {
     border: 1px solid #e5e7eb;
     box-shadow: 0 8px 20px rgba(0,0,0,0.05);
     transition: 0.3s;
-    position: relative;
-    overflow: hidden;
 }
 
 .card:hover {
     transform: translateY(-6px);
     box-shadow: 0 15px 35px rgba(37,99,235,0.2);
-}
-
-/* BLUE TOP BAR */
-.card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 4px;
-    width: 100%;
-    background: linear-gradient(90deg, #2563eb, #1e40af);
 }
 
 /* ================= TEXT ================= */
@@ -117,20 +110,13 @@ body {
     margin-bottom: 6px;
 }
 
-.price {
-    font-size: 14px;
-    font-weight: 600;
-    color: #2563eb;
-    margin-bottom: 6px;
-}
-
 .distance {
     font-size: 13px;
     color: #0f172a;
-    margin-bottom: 12px;
+    margin-top: 8px;
 }
 
-/* ================= BOOK BUTTON ================= */
+/* ================= VIEW DETAILS ================= */
 .book-btn {
     display: block;
     text-align: center;
@@ -140,68 +126,26 @@ body {
     border-radius: 10px;
     text-decoration: none;
     font-weight: 500;
+    margin-top: 10px;
     transition: 0.3s;
 }
 
 .book-btn:hover {
-    opacity: 0.9;
     transform: scale(1.03);
+    opacity: 0.9;
 }
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
+
     .topbar {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
     }
 
-    .btn {
+    .top-actions {
         width: 100%;
+        justify-content: flex-end;
     }
-}
-
-/* ================= SHARED CARD STYLE ================= */
-.book-btn {
-    display: block;
-    text-align: center;
-    padding: 10px;
-    background: linear-gradient(90deg, #2563eb, #1e40af);
-    color: white;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: 0.3s;
-    margin-top: 10px;
-}
-
-.book-btn:hover {
-    opacity: 0.9;
-    transform: scale(1.03);
-}
-
-/* SAME TEXT STYLES */
-.name {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 6px;
-}
-
-.meta {
-    font-size: 13px;
-    color: #64748b;
-    margin-bottom: 6px;
-}
-
-.price {
-    font-size: 14px;
-    font-weight: 600;
-    color: #2563eb;
-    margin-bottom: 6px;
-}
-
-.distance {
-    font-size: 13px;
-    color: #0f172a;
-    margin-top: 8px;
 }
