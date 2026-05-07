@@ -20,6 +20,168 @@ from .models import Parking, Booking
 from .utils import haversine
 
 
+
+# ================= Authentication =================
+
+def login(request):
+    if request.method == 'POST':
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+
+        user = authenticate(request, username=email, password=password)
+
+        if user is not None:
+            if user.is_active:
+                auth_login(request, user)
+                return redirect('mydashboard')
+            else:
+                messages.error(request, "⚠️ Please verify your email first")
+        else:
+            messages.error(request, "❌ Invalid Email or Password")
+
+    return render(request, "login.html")
+
+
+# 📝 SIGNUP + EMAIL VERIFY
+def signup(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        # ✅ Email format validation
+        try:
+            validate_email(email)
+        except ValidationError:
+            return render(request, 'signup.html', {
+                'error': '❌ Invalid email format'
+            })
+
+        # ✅ Check existing user
+        if User.objects.filter(username=email).exists():
+            return render(request, 'signup.html', {
+                'error': '❌ Email already exists'
+            })
+
+        # ✅ Create inactive user
+        user = User.objects.create_user(
+            username=email,
+            first_name=name,
+            email=email,
+            password=password
+        )
+        user.is_active = False
+        user.save()
+
+        # 🔥 Activation link
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = account_activation_token.make_token(user)
+
+        link = f"http://127.0.0.1:8000/activate/{uid}/{token}/"
+
+        # 📧 Send email
+        try:
+            send_mail(
+                'Activate your account',
+                f'Hi {name},\n\nClick this link to activate your account:\n{link}',
+                'ankitparmar8126@gmail.com',
+                [email],
+                fail_silently=False
+            )
+        except Exception:
+            return render(request, 'signup.html', {
+                'error': '❌ Email sending failed (check App Password)'
+            })
+
+        return render(request, 'signup.html', {
+            'message': '✅ Check your email to activate your account'
+        })
+
+    return render(request, 'signup.html')
+
+
+# 🔗 ACTIVATE ACCOUNT
+def activate(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+    except:
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, "✅ Account activated successfully. Login now.")
+        return redirect('login')
+    else:
+        return HttpResponse("❌ Invalid or expired activation link")
+
+
+# 🔁 FORGOT PASSWORD (SEND RESET LINK)
+def forgot(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+
+        try:
+            user = User.objects.get(username=email)
+        except User.DoesNotExist:
+            return render(request, "forgot.html", {
+                "error": "❌ Email not found"
+            })
+
+        # 🔥 Reset link generate
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = default_token_generator.make_token(user)
+
+        link = f"http://127.0.0.1:8000/reset/{uid}/{token}/"
+
+        # 📧 Send email
+        try:
+            send_mail(
+                'Reset your password',
+                f'Click this link to reset your password:\n{link}',
+                'ankitparmar8126@gmail.com',
+                [email],
+                fail_silently=False
+            )
+        except Exception:
+            return render(request, "forgot.html", {
+                "error": "❌ Email sending failed"
+            })
+
+        return render(request, "forgot.html", {
+            "message": "✅ Reset link sent to your email"
+        })
+
+    return render(request, "forgot.html")
+
+
+# 🔑 RESET PASSWORD
+def reset_password(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+    except:
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+
+        if request.method == "POST":
+            new_password = request.POST.get('password')
+            user.set_password(new_password)
+            user.save()
+
+            messages.success(request, "✅ Password reset successful. Login now.")
+            return redirect('login')
+
+        return render(request, 'reset.html')
+
+    else:
+        return HttpResponse("❌ Invalid or expired reset link")
+
+
+
+
 # ================= BASIC PAGES =================
 
 def home(request):
@@ -36,119 +198,6 @@ def contact(request):
 
 
 # ================= LOGIN =================
-
-def login(request):
-    if request.method == 'POST':
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-
-        user = authenticate(request, username=email, password=password)
-
-        if user is not None:
-            if user.is_active:
-                auth_login(request, user)
-                return redirect('mydashboard')
-            else:
-                messages.error(request, "Verify your email first")
-        else:
-            messages.error(request, "Invalid Email or Password")
-
-    return render(request, "login.html")
-
-
-# ================= SIGNUP =================
-
-def signup(request):
-    if request.method == "POST":
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-
-        try:
-            validate_email(email)
-        except ValidationError:
-            return render(request, 'signup.html', {'error': 'Invalid email'})
-
-        if User.objects.filter(username=email).exists():
-            return render(request, 'signup.html', {'error': 'Email already exists'})
-
-        user = User.objects.create_user(
-            username=email,
-            first_name=name,
-            email=email,
-            password=password
-        )
-        user.is_active = True
-        user.save()
-
-        return redirect('login')
-
-    return render(request, 'signup.html')
-
-
-# ================= ACTIVATE =================
-
-def activate(request, uidb64, token):
-    try:
-        uid = urlsafe_base64_decode(uidb64).decode()
-        user = User.objects.get(pk=uid)
-    except:
-        user = None
-
-    if user and account_activation_token.check_token(user, token):
-        user.is_active = True
-        user.save()
-        return redirect('login')
-
-    return HttpResponse("Invalid link")
-
-
-# ================= FORGOT PASSWORD =================
-
-def forgot(request):
-    if request.method == "POST":
-        email = request.POST.get("email")
-
-        try:
-            user = User.objects.get(username=email)
-        except:
-            return render(request, "forgot.html", {"error": "Email not found"})
-
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
-        token = default_token_generator.make_token(user)
-
-        link = f"http://127.0.0.1:8000/reset/{uid}/{token}/"
-
-        send_mail(
-            'Reset Password',
-            f'Click here:\n{link}',
-            'your_email@gmail.com',
-            [email],
-        )
-
-        return render(request, "forgot.html", {"message": "Check your email"})
-
-    return render(request, "forgot.html")
-
-
-# ================= RESET PASSWORD =================
-
-def reset_password(request, uidb64, token):
-    try:
-        uid = urlsafe_base64_decode(uidb64).decode()
-        user = User.objects.get(pk=uid)
-    except:
-        user = None
-
-    if user and default_token_generator.check_token(user, token):
-        if request.method == "POST":
-            user.set_password(request.POST.get('password'))
-            user.save()
-            return redirect('login')
-
-        return render(request, 'reset.html')
-
-    return HttpResponse("Invalid link")
 
 
 # ================= DASHBOARD =================
