@@ -66,6 +66,79 @@ def contact(request):
 # LOGIN
 # =========================================================
 
+# ================= IMPORTS =================
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
+
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
+
+from django.contrib import messages
+
+from django.utils.http import (
+    urlsafe_base64_encode,
+    urlsafe_base64_decode
+)
+
+from django.utils.encoding import (
+    force_bytes,
+    force_str
+)
+
+from django.core.mail import send_mail
+from django.http import HttpResponse
+
+from django.contrib.auth.tokens import (
+    default_token_generator
+)
+
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+
+from django.contrib.sites.shortcuts import (
+    get_current_site
+)
+
+# ✅ IMPORTANT FIX
+from django.conf import settings as django_settings
+
+from django.db import transaction
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from .tokens import account_activation_token
+from .models import Parking, Booking
+from .utils import haversine
+
+
+# =========================================================
+# BASIC PAGES
+# =========================================================
+
+def home(request):
+    return render(request, "home.html")
+
+
+def about(request):
+    return render(request, "about.html")
+
+
+def features(request):
+    return render(request, "features.html")
+
+
+def contact(request):
+    return render(request, "contact.html")
+
+
+# =========================================================
+# LOGIN
+# =========================================================
+
 def login(request):
 
     if request.method == 'POST':
@@ -188,7 +261,8 @@ If you did not create this account,
 ignore this email.
 """,
 
-                from_email=settings.EMAIL_HOST_USER,
+                # ✅ FIXED
+                from_email=django_settings.EMAIL_HOST_USER,
 
                 recipient_list=[email],
 
@@ -321,7 +395,8 @@ If you did not request this,
 ignore this email.
 """,
 
-                from_email=settings.EMAIL_HOST_USER,
+                # ✅ FIXED
+                from_email=django_settings.EMAIL_HOST_USER,
 
                 recipient_list=[email],
 
@@ -426,8 +501,6 @@ def logout(request):
     auth_logout(request)
 
     return redirect('login')
-
-
 # =========================================================
 # FIND PARKING
 # =========================================================
