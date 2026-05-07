@@ -24,8 +24,10 @@ INSTALLED_APPS = [
 
     'myapp',
     'rest_framework',
+    'django.contrib.sites',
 ]
 
+SITE_ID = 1
 
 # ⚙️ MIDDLEWARE (correct order)
 MIDDLEWARE = [
@@ -103,20 +105,11 @@ STATIC_ROOT = BASE_DIR / "myproductionstaticfiles"
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-# 🔐 AUTH SETTINGS
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'mydashboard'
-LOGOUT_REDIRECT_URL = 'login'
-
-
-# 🔑 DEFAULT FIELD
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# 📧 EMAIL CONFIG (Gmail SMTP)
+# 📧 EMAIL CONFIG
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = 'ankitparmar8126@gmail.com'
-EMAIL_HOST_PASSWORD = 'bessabqlcvzyrjvu'  # App Password (no spaces)
+EMAIL_HOST_USER = os.environ.get("ankitparmar8126@gmail.com")
+EMAIL_HOST_PASSWORD = os.environ.get("bessabqlcvzyrjvu")

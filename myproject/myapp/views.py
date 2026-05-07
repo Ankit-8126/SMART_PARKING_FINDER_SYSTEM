@@ -19,10 +19,12 @@ from .tokens import account_activation_token
 from .models import Parking, Booking
 from .utils import haversine
 
-
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_str
 
 # ================= Authentication =================
 
+# 🔐 LOGIN
 def login(request):
     if request.method == 'POST':
         email = request.POST.get("email")
@@ -44,20 +46,23 @@ def login(request):
 
 # 📝 SIGNUP + EMAIL VERIFY
 def signup(request):
+
     if request.method == "POST":
+
         name = request.POST.get('name')
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        # ✅ Email format validation
+        # ✅ Validate email
         try:
             validate_email(email)
+
         except ValidationError:
             return render(request, 'signup.html', {
                 'error': '❌ Invalid email format'
             })
 
-        # ✅ Check existing user
+        # ✅ Check existing email
         if User.objects.filter(username=email).exists():
             return render(request, 'signup.html', {
                 'error': '❌ Email already exists'
@@ -70,115 +75,172 @@ def signup(request):
             email=email,
             password=password
         )
+
         user.is_active = False
         user.save()
 
-        # 🔥 Activation link
+        # ✅ Generate token
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         token = account_activation_token.make_token(user)
 
-        link = f"http://127.0.0.1:8000/activate/{uid}/{token}/"
+        # ✅ Dynamic domain
+        current_site = get_current_site(request)
 
-        # 📧 Send email
+        activation_link = (
+            f"https://{current_site.domain}"
+            f"/activate/{uid}/{token}/"
+        )
+
+        # ✅ Send email
         try:
+
             send_mail(
-                'Activate your account',
-                f'Hi {name},\n\nClick this link to activate your account:\n{link}',
-                'ankitparmar8126@gmail.com',
-                [email],
+                subject='Activate your Smart Parking account',
+
+                message=f'''
+Hi {name},
+
+Click below link to activate your account:
+
+{activation_link}
+
+If you did not create this account, ignore this email.
+''',
+
+                from_email='ankitparmar8126@gmail.com',
+                recipient_list=[email],
                 fail_silently=False
             )
-        except Exception:
+
             return render(request, 'signup.html', {
-                'error': '❌ Email sending failed (check App Password)'
+                'message': '✅ Verification link sent to your email'
             })
 
-        return render(request, 'signup.html', {
-            'message': '✅ Check your email to activate your account'
-        })
+        except Exception as e:
+
+            return render(request, 'signup.html', {
+                'error': f'❌ Email sending failed: {str(e)}'
+            })
 
     return render(request, 'signup.html')
 
 
 # 🔗 ACTIVATE ACCOUNT
 def activate(request, uidb64, token):
+
     try:
-        uid = urlsafe_base64_decode(uidb64).decode()
+        uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
+
     except:
         user = None
 
     if user is not None and account_activation_token.check_token(user, token):
+
         user.is_active = True
         user.save()
-        messages.success(request, "✅ Account activated successfully. Login now.")
+
+        messages.success(
+            request,
+            "✅ Account activated successfully. Login now."
+        )
+
         return redirect('login')
+
     else:
         return HttpResponse("❌ Invalid or expired activation link")
 
 
-# 🔁 FORGOT PASSWORD (SEND RESET LINK)
+# 🔁 FORGOT PASSWORD
 def forgot(request):
+
     if request.method == "POST":
+
         email = request.POST.get("email")
 
         try:
             user = User.objects.get(username=email)
+
         except User.DoesNotExist:
+
             return render(request, "forgot.html", {
                 "error": "❌ Email not found"
             })
 
-        # 🔥 Reset link generate
+        # ✅ Generate token
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         token = default_token_generator.make_token(user)
 
-        link = f"http://127.0.0.1:8000/reset/{uid}/{token}/"
+        # ✅ Dynamic domain
+        current_site = get_current_site(request)
 
-        # 📧 Send email
+        reset_link = (
+            f"https://{current_site.domain}"
+            f"/reset/{uid}/{token}/"
+        )
+
+        # ✅ Send email
         try:
+
             send_mail(
-                'Reset your password',
-                f'Click this link to reset your password:\n{link}',
-                'ankitparmar8126@gmail.com',
-                [email],
+                subject='Reset Your Password',
+
+                message=f'''
+Click below link to reset your password:
+
+{reset_link}
+
+If you did not request this, ignore this email.
+''',
+
+                from_email='ankitparmar8126@gmail.com',
+                recipient_list=[email],
                 fail_silently=False
             )
-        except Exception:
+
             return render(request, "forgot.html", {
-                "error": "❌ Email sending failed"
+                "message": "✅ Reset link sent to your email"
             })
 
-        return render(request, "forgot.html", {
-            "message": "✅ Reset link sent to your email"
-        })
+        except Exception as e:
+
+            return render(request, "forgot.html", {
+                "error": f"❌ Email sending failed: {str(e)}"
+            })
 
     return render(request, "forgot.html")
 
 
 # 🔑 RESET PASSWORD
 def reset_password(request, uidb64, token):
+
     try:
-        uid = urlsafe_base64_decode(uidb64).decode()
+        uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
+
     except:
         user = None
 
     if user is not None and default_token_generator.check_token(user, token):
 
         if request.method == "POST":
+
             new_password = request.POST.get('password')
+
             user.set_password(new_password)
             user.save()
 
-            messages.success(request, "✅ Password reset successful. Login now.")
+            messages.success(
+                request,
+                "✅ Password reset successful. Login now."
+            )
+
             return redirect('login')
 
         return render(request, 'reset.html')
 
     else:
         return HttpResponse("❌ Invalid or expired reset link")
-
 
 
 
