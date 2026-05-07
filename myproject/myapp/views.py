@@ -138,6 +138,76 @@ def contact(request):
 # =========================================================
 # LOGIN
 # =========================================================
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
+
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
+
+from django.contrib import messages
+
+from django.utils.http import (
+    urlsafe_base64_encode,
+    urlsafe_base64_decode
+)
+
+from django.utils.encoding import (
+    force_bytes,
+    force_str
+)
+
+from django.core.mail import send_mail
+from django.http import HttpResponse
+
+from django.contrib.auth.tokens import (
+    default_token_generator
+)
+
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+
+from django.contrib.sites.shortcuts import (
+    get_current_site
+)
+
+# ✅ IMPORTANT FIX
+from django.conf import settings as django_settings
+
+from django.db import transaction
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from .tokens import account_activation_token
+from .models import Parking, Booking
+from .utils import haversine
+
+
+# =========================================================
+# BASIC PAGES
+# =========================================================
+
+def home(request):
+    return render(request, "home.html")
+
+
+def about(request):
+    return render(request, "about.html")
+
+
+def features(request):
+    return render(request, "features.html")
+
+
+def contact(request):
+    return render(request, "contact.html")
+
+
+# =========================================================
+# LOGIN
+# =========================================================
 
 def login(request):
 
@@ -189,7 +259,6 @@ def signup(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        # EMAIL VALIDATION
         try:
 
             validate_email(email)
@@ -204,7 +273,6 @@ def signup(request):
                 }
             )
 
-        # CHECK EXISTING USER
         if User.objects.filter(username=email).exists():
 
             return render(
@@ -215,7 +283,6 @@ def signup(request):
                 }
             )
 
-        # CREATE USER
         user = User.objects.create_user(
             username=email,
             first_name=name,
@@ -226,7 +293,6 @@ def signup(request):
         user.is_active = False
         user.save()
 
-        # TOKEN
         uid = urlsafe_base64_encode(
             force_bytes(user.pk)
         )
@@ -235,7 +301,6 @@ def signup(request):
             user
         )
 
-        # DOMAIN
         current_site = get_current_site(request)
 
         activation_link = (
@@ -243,7 +308,6 @@ def signup(request):
             f"/activate/{uid}/{token}/"
         )
 
-        # SEND EMAIL
         try:
 
             send_mail(
@@ -261,7 +325,6 @@ If you did not create this account,
 ignore this email.
 """,
 
-                # ✅ FIXED
                 from_email=django_settings.EMAIL_HOST_USER,
 
                 recipient_list=[email],
@@ -362,7 +425,6 @@ def forgot(request):
                 }
             )
 
-        # TOKEN
         uid = urlsafe_base64_encode(
             force_bytes(user.pk)
         )
@@ -371,7 +433,6 @@ def forgot(request):
             user
         )
 
-        # DOMAIN
         current_site = get_current_site(request)
 
         reset_link = (
@@ -379,7 +440,6 @@ def forgot(request):
             f"/reset/{uid}/{token}/"
         )
 
-        # SEND EMAIL
         try:
 
             send_mail(
@@ -395,7 +455,6 @@ If you did not request this,
 ignore this email.
 """,
 
-                # ✅ FIXED
                 from_email=django_settings.EMAIL_HOST_USER,
 
                 recipient_list=[email],
@@ -501,6 +560,19 @@ def logout(request):
     auth_logout(request)
 
     return redirect('login')
+
+
+# =========================================================
+# SETTINGS PAGE
+# =========================================================
+
+@login_required(login_url='login')
+def user_settings(request):
+
+    return render(
+        request,
+        "settings.html"
+    )
 # =========================================================
 # FIND PARKING
 # =========================================================

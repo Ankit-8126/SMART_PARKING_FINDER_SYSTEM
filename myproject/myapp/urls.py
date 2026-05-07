@@ -22,7 +22,7 @@ urlpatterns = [
 
     path('my-profile/', views.my_profile, name='my_profile'),
 
-    path('settings/', views.settings, name='settings'),
+    path('settings/', views.user_settings, name='settings'),
 
     path('find-parking/', views.find_parking_page,name='find_parking'),
     path('api/nearby-parkings/', views.nearby_parkings,name='nearby_parkings'),
