@@ -1,0 +1,81 @@
+
+
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+    color: white;
+}
+
+.hero h1 {
+    font-size: 40px;
+}
+
+/* FEATURES GRID */
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding: 70px 8%;
+}
+
+.card {
+    background: rgba(255,255,255,0.9);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    transition: 0.4s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: translateY(-12px) scale(1.03);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+.icon {
+    font-size: 35px;
+    margin-bottom: 10px;
+}
+
+/* HIGHLIGHT SECTIONS */
+.highlight {
+    display: flex;
+    align-items: center;
+    padding: 60px 8%;
+    gap: 40px;
+}
+
+.highlight img {
+    width: 50%;
+    border-radius: 20px;
+}
+
+.highlight .text {
+    flex: 1;
+}
+
+.reverse {
+    flex-direction: row-reverse;
+}
+
+/* CTA */
+.cta {
+    text-align: center;
+    padding: 70px;
+    background: #111;
+    color: white;
+}
+
+.cta button {
+    margin-top: 20px;
+    padding: 12px 25px;
+    border: none;
+    background: #007bff;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+

@@ -1,0 +1,207 @@
+/* ================= GLOBAL RESET ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ================= BODY ================= */
+body {
+    background: #f4f7fb;
+    color: #0f172a;
+}
+
+/* ================= CONTAINER ================= */
+.container {
+    width: 92%;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+/* ================= TOPBAR ================= */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.topbar h2 {
+    font-size: 26px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* ================= BUTTON ================= */
+.btn {
+    background: linear-gradient(90deg, #2563eb, #1e40af);
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+/* ================= SEARCH BOX ================= */
+.search-box {
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid #cbd5e1;
+    outline: none;
+    transition: 0.3s;
+}
+
+.search-box input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+}
+
+/* ================= GRID ================= */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+/* ================= CARD ================= */
+.card {
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px rgba(37,99,235,0.2);
+}
+
+/* BLUE TOP BAR */
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 100%;
+    background: linear-gradient(90deg, #2563eb, #1e40af);
+}
+
+/* ================= TEXT ================= */
+.name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.meta {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 6px;
+}
+
+.price {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2563eb;
+    margin-bottom: 6px;
+}
+
+.distance {
+    font-size: 13px;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+/* ================= BOOK BUTTON ================= */
+.book-btn {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    background: linear-gradient(90deg, #2563eb, #1e40af);
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.book-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.03);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+
+/* ================= SHARED CARD STYLE ================= */
+.book-btn {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    background: linear-gradient(90deg, #2563eb, #1e40af);
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.book-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.03);
+}
+
+/* SAME TEXT STYLES */
+.name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.meta {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 6px;
+}
+
+.price {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2563eb;
+    margin-bottom: 6px;
+}
+
+.distance {
+    font-size: 13px;
+    color: #0f172a;
+    margin-top: 8px;
+}

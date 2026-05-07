@@ -1,0 +1,48 @@
+
+
+/* HERO */
+.hero {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+            url("/static/img/home-background.jpg");
+    background-size: cover;
+    color: white;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 50px;
+}
+
+.hero p {
+    margin: 15px 0;
+}
+
+
+/* FEATURES */
+.features {
+    padding: 60px 8%;
+    text-align: center;
+}
+
+.feature-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    width: 30%;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
