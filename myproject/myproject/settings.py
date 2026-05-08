@@ -13,7 +13,7 @@ SECRET_KEY = os.environ.get(
     'django-insecure-temp-key'
 )
 
-DEBUG = False
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
     '.onrender.com',
@@ -186,6 +186,6 @@ EMAIL_PORT = 587
 
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = 'ankitparmar8126@gmail.com'
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 
-EMAIL_HOST_PASSWORD = 'bessabqlcvzyrjvu'
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
