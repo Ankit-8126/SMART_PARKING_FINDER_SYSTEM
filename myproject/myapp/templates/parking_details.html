@@ -18,38 +18,15 @@
         <h2>{{ p.name }}</h2>
 
         <p>📍 {{ p.address }}</p>
-
         <p>💰 ₹{{ p.price }} / hr</p>
+        <p>🅿 Slots: {{ p.available_slots }}</p>
 
-        <p>🅿 Available Slots: {{ p.available_slots }}</p>
-
-        <button onclick="bookParking({{ p.id }})" class="book-btn">
-            Book Now
-        </button>
-
+       <a href="{% url 'book_now' p.id %}" class="book-btn">
+              Book Now
+        </a>
     </div>
 
 </div>
-
-<script>
-function bookParking(id) {
-    fetch("/api/book-parking/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": "{{ csrf_token }}"
-        },
-        body: JSON.stringify({
-            parking_id: id
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert(data.message || data.error);
-        location.reload();
-    });
-}
-</script>
 
 {% include 'footer.html' %}
 

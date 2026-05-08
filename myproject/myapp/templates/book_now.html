@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Parking</title>
+
+    <link rel="stylesheet" href="{% static 'css/book_now-style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+
+{% include 'nav2.html' %}
+
+<div class="container">
+
+    <div class="card">
+
+        <h2>🚗 Book Parking Slot</h2>
+
+        <p class="sub">Enter number of hours to proceed</p>
+
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>Hours</label>
+            <input type="number" name="hours" min="1" required>
+
+            <button type="submit">Proceed to Payment</button>
+        </form>
+
+    </div>
+
+</div>
+
+
+{% include 'footer.html' %}
+
+</body>
+</html>

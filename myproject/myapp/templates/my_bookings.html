@@ -1,94 +1,107 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html>
+
 <head>
+
     <title>My Bookings</title>
 
     <link rel="stylesheet" href="{% static 'css/my_bookings-style.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+          rel="stylesheet">
+
 </head>
 
 <body>
 
 {% include 'nav2.html' %}
 
-<div class="page">
+<div class="container">
 
-    <!-- HEADER -->
-    <div class="header">
-        <h2>My Bookings</h2>
-        <p>Manage and track your parking bookings</p>
-    </div>
+    <h2 class="title">
+        📦 My Bookings
+    </h2>
 
-    <!-- SUMMARY -->
-    <div class="summary">
-        <div class="box">
-            <h3>12</h3>
-            <p>Total Bookings</p>
-        </div>
+    <div class="grid">
 
-        <div class="box">
-            <h3>5</h3>
-            <p>Active</p>
-        </div>
-
-        <div class="box">
-            <h3>7</h3>
-            <p>Completed</p>
-        </div>
-    </div>
-
-    <!-- BOOKINGS LIST -->
-    <div class="list">
-
-        <!-- CARD -->
-        <div class="booking-card">
-
-            <div class="info">
-                <h3>City Mall Parking</h3>
-                <p><i class="fas fa-location-dot"></i> Agra</p>
-                <p><i class="fas fa-clock"></i> 10:30 AM - 12:30 PM</p>
-            </div>
-
-            <div class="status">
-                <span class="badge green">Active</span>
-            </div>
-
-            <div class="actions">
-                <a href="#" class="view-btn">View</a>
-                <a href="#" class="cancel-btn">Cancel</a>
-            </div>
-
-        </div>
+        {% for b in bookings %}
 
         <div class="booking-card">
 
-            <div class="info">
-                <h3>Railway Parking</h3>
-                <p><i class="fas fa-location-dot"></i> Agra Cantt</p>
-                <p><i class="fas fa-clock"></i> 08:00 AM - 09:00 AM</p>
+            <!-- TOP CONTENT -->
+            <div class="card-content">
+
+                <h3>
+                    {{ b.parking.name }}
+                </h3>
+
+                <p>
+                    💰 ₹{{ b.total_price }}
+                </p>
+
+                <p>
+                    ⏰ {{ b.hours }} Hours
+                </p>
+
+                <p>
+                    🕒 Start:
+                    {{ b.start_time }}
+                </p>
+
+                <p>
+                    🛑 End:
+                    {{ b.end_time }}
+                </p>
+
+                <p>
+
+                    Status:
+
+                    {% if b.payment_status == "COMPLETED" %}
+
+                        <span class="completed">
+                            Completed
+                        </span>
+
+                    {% elif b.payment_status == "CANCELLED" %}
+
+                        <span class="cancelled">
+                            Cancelled
+                        </span>
+
+                    {% else %}
+
+                        <span class="active">
+                            Active
+                        </span>
+
+                    {% endif %}
+
+                </p>
+
             </div>
 
-            <div class="status">
-                <span class="badge gray">Completed</span>
-            </div>
+            <!-- BOTTOM BUTTON -->
+            <div class="card-bottom">
 
-            <div class="actions">
-                <a href="#" class="view-btn">View</a>
+                {% if b.is_active and b.payment_status != "COMPLETED" %}
+
+                <a href="{% url 'cancel_booking' b.id %}"
+                   class="cancel-btn">
+
+                    Cancel Booking
+
+                </a>
+
+                {% endif %}
+
             </div>
 
         </div>
 
-        <!-- EMPTY STATE -->
-        <!--
-        <div class="empty">
-            <p>No bookings yet 😕</p>
-            <a href="{% url 'find_parking' %}">Book Now</a>
-        </div>
-        -->
+        {% endfor %}
 
     </div>
 
@@ -97,4 +110,5 @@
 {% include 'footer.html' %}
 
 </body>
+
 </html>

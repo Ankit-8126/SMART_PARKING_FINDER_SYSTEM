@@ -45,7 +45,8 @@ from .utils import haversine
 # =========================================================
 # BASIC PAGES
 # =========================================================
-
+from django.utils import timezone
+from datetime import timedelta
 def home(request):
     return render(request, "home.html")
 
@@ -890,6 +891,36 @@ def my_bookings(request):
         user=request.user
     ).order_by('-booked_at')
 
+    current_time = timezone.now()
+
+    for booking in bookings:
+
+        if (
+
+            booking.is_active
+
+            and
+
+            booking.end_time
+
+            and
+
+            current_time >= booking.end_time
+
+        ):
+
+            booking.is_active = False
+
+            booking.payment_status = "COMPLETED"
+
+            booking.save()
+
+            parking = booking.parking
+
+            parking.available_slots += 1
+
+            parking.save()
+
     return render(
         request,
         "my_bookings.html",
@@ -897,7 +928,6 @@ def my_bookings(request):
             "bookings": bookings
         }
     )
-
 
 # =========================================================
 # PARKING DETAIL
@@ -917,4 +947,115 @@ def parking_detail(request, id):
         {
             "p": parking
         }
+    )
+
+
+
+import razorpay
+from django.conf import settings
+from django.db import transaction
+
+
+
+@login_required
+def book_now(request, parking_id):
+
+    parking = get_object_or_404(
+        Parking,
+        id=parking_id
+    )
+
+    if request.method == "POST":
+
+        hours = int(
+            request.POST.get("hours")
+        )
+
+        total_price = hours * parking.price
+
+        if parking.available_slots <= 0:
+
+            return render(
+                request,
+                "book_now.html",
+                {
+                    "parking": parking,
+                    "error": "No Slots Available"
+                }
+            )
+
+        start_time = timezone.now()
+
+        end_time = start_time + timedelta(
+            hours=hours
+        )
+
+        booking = Booking.objects.create(
+
+            user=request.user,
+
+            parking=parking,
+
+            hours=hours,
+
+            total_price=total_price,
+
+            start_time=start_time,
+
+            end_time=end_time,
+
+            payment_status="SUCCESS",
+
+            is_active=True
+        )
+
+        parking.available_slots -= 1
+
+        parking.save()
+
+        messages.success(
+            request,
+            "Parking Booked Successfully"
+        )
+
+        return redirect(
+            "my_bookings"
+        )
+
+    return render(
+        request,
+        "book_now.html",
+        {
+            "parking": parking
+        }
+    )
+
+@login_required
+def cancel_booking(request, booking_id):
+
+    booking = get_object_or_404(
+
+        Booking,
+
+        id=booking_id,
+
+        user=request.user
+    )
+
+    if booking.is_active:
+
+        parking = booking.parking
+
+        parking.available_slots += 1
+
+        parking.save()
+
+        booking.is_active = False
+
+        booking.payment_status = "CANCELLED"
+
+        booking.save()
+
+    return redirect(
+        "my_bookings"
     )

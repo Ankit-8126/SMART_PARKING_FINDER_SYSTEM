@@ -1,115 +1,147 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+/* =========================
+   GLOBAL
+========================= */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
 }
 
-body {
-    background: #f4f7fb;
+/* =========================
+   BODY
+========================= */
+body{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    background:#f1f5f9;
+    overflow-x:hidden;
 }
 
-/* container */
-.container {
-    width: 90%;
-    max-width: 1000px;
-    margin: 50px auto;
+/* =========================
+   CONTAINER
+========================= */
+.container{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:50px 20px;
 }
 
-/* hero card */
-.hero-card {
-    background: white;
-    padding: 30px;
-    border-radius: 18px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    position: relative;
-    overflow: hidden;
+/* =========================
+   CARD
+========================= */
+.card{
+    width:100%;
+    max-width:500px;
+    background:#ffffff;
+    border-radius:22px;
+    padding:40px 35px;
+    text-align:center;
+    border:1px solid #e2e8f0;
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
+    animation:fadeIn 0.5s ease;
 }
 
-/* blue top strip */
-.hero-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 5px;
-    width: 100%;
-    background: linear-gradient(90deg, #2563eb, #1e40af);
+/* =========================
+   HEADING
+========================= */
+.card h2{
+    color:#111827;
+    font-size:32px;
+    font-weight:600;
+    margin-bottom:25px;
 }
 
-/* header */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* =========================
+   DETAILS BOXES
+========================= */
+.card p{
+    color:#ffffff;
+    font-size:17px;
+    margin-bottom:18px;
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    padding:14px 18px;
+    border-radius:14px;
+    border:none;
+    transition:0.3s ease;
+    box-shadow:0 5px 15px rgba(37,99,235,0.2);
 }
 
-.header h1 {
-    font-size: 28px;
-    color: #0f172a;
+/* HOVER EFFECT */
+.card p:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(37,99,235,0.3);
 }
 
-.badge {
-    background: #22c55e;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
+/* =========================
+   BOOK BUTTON
+========================= */
+/* =========================
+   BOOK BUTTON
+========================= */
+.book-btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:14px 30px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:#ffffff;
+    text-decoration:none;
+    font-size:16px;
+    font-weight:600;
+    transition:0.3s ease;
+    box-shadow:0 5px 15px rgba(37,99,235,0.25);
 }
 
-/* address */
-.address {
-    margin: 10px 0 25px;
-    color: #64748b;
+/* BUTTON HOVER */
+.book-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(37,99,235,0.35);
+    background:linear-gradient(135deg,#1d4ed8,#1e40af);
 }
 
-/* grid */
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+/* =========================
+   ANIMATION
+========================= */
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }
 
-/* boxes */
-.box {
-    background: #f1f5f9;
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
-}
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media(max-width:550px){
 
-.box h3 {
-    color: #2563eb;
-    font-size: 20px;
-}
+    .container{
+        padding:30px 15px;
+    }
 
-.box p {
-    font-size: 12px;
-    color: #64748b;
-}
+    .card{
+        padding:30px 22px;
+    }
 
-/* button */
-.book-btn {
-    margin-top: 25px;
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(90deg, #2563eb, #1e40af);
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
-}
+    .card h2{
+        font-size:26px;
+    }
 
-.book-btn:hover {
-    transform: scale(1.02);
-    opacity: 0.9;
-}
+    .card p{
+        font-size:15px;
+        padding:12px 14px;
+    }
 
-/* responsive */
-@media (max-width: 600px) {
-    .info-grid {
-        grid-template-columns: 1fr;
+    .book-btn{
+        width:100%;
+        padding:13px;
+        font-size:15px;
     }
 }

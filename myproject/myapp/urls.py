@@ -32,5 +32,11 @@ urlpatterns = [
 
     path('parking/<int:id>/', views.parking_detail, name='parking_detail'),
 
+   path('book-now/<int:parking_id>/', views.book_now, name='book_now'),
 
+    path(
+        'cancel-booking/<int:booking_id>/',
+        views.cancel_booking,
+        name='cancel_booking'
+    ),
 ]
