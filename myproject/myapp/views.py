@@ -175,51 +175,7 @@ def signup(request):
         # SEND EMAIL
         try:
 
-            send_mail(
-
-                subject='Activate Your Smart Parking Account',
-
-                message=f"""
-Hi {name},
-
-Click below link to activate account:
-
-{activation_link}
-
-If you did not create this account,
-ignore this email.
-""",
-
-                from_email=settings.EMAIL_HOST_USER,
-
-                recipient_list=[email],
-
-                fail_silently=True
-            )
-
-            return render(
-                request,
-                'signup.html',
-                {
-                    'message':
-                        'Verification link sent to your email'
-                }
-            )
-
-        except Exception as e:
-
-            return render(
-                request,
-                'signup.html',
-                {
-                    'error':
-                        f'Email sending failed: {str(e)}'
-                }
-            )
-
-    return render(request, 'signup.html')
-
-
+          #
 # =========================================================
 # ACTIVATE ACCOUNT
 # =========================================================
@@ -310,26 +266,7 @@ def forgot(request):
         # SEND EMAIL
         try:
 
-            send_mail(
-
-                subject='Reset Your Password',
-
-                message=f"""
-Click below link to reset password:
-
-{reset_link}
-
-If you did not request this,
-ignore this email.
-""",
-
-                from_email=settings.EMAIL_HOST_USER,
-
-                recipient_list=[email],
-
-                fail_silently=True
-            )
-
+          #
             return render(
                 request,
                 "forgot.html",
