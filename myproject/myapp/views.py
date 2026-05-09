@@ -543,15 +543,68 @@ def reset_password(request, uidb64, token):
 # DASHBOARD
 # =========================================================
 
-@login_required(login_url='login')
+
+
+# =========================================================
+# DASHBOARD
+# =========================================================
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import Booking, Parking
+
+
+@login_required
 def mydashboard(request):
+
+    # User bookings
+    bookings = Booking.objects.filter(
+        user=request.user
+    ).order_by('-booked_at')
+
+    # Total bookings
+    total_bookings = bookings.exclude(
+        payment_status="CANCELLED"
+    ).count()
+
+    # Active bookings
+    active_slots = bookings.filter(
+        is_active=True
+    ).count()
+
+    # Total spent
+    # CANCELLED bookings excluded
+    total_spent = sum(
+
+        booking.total_price
+
+        for booking in bookings
+
+        if booking.payment_status != "CANCELLED"
+    )
+
+    # Nearby parking cards
+    parkings = Parking.objects.all()[:4]
+
+    context = {
+
+        'total_bookings': total_bookings,
+
+        'active_slots': active_slots,
+
+        'total_spent': total_spent,
+
+        'parkings': parkings,
+
+        'recent_bookings': bookings[:4],
+
+    }
 
     return render(
         request,
-        "mydashboard.html"
+        'mydashboard.html',
+        context
     )
-
-
 # =========================================================
 # LOGOUT
 # =========================================================
@@ -644,9 +697,45 @@ def find_parking_page(request):
 @login_required(login_url='login')
 def my_profile(request):
 
+    # User bookings
+    bookings = Booking.objects.filter(
+        user=request.user
+    )
+
+    # Total bookings
+    total_bookings = bookings.exclude(
+        payment_status="CANCELLED"
+    ).count()
+
+    # Active bookings
+    active_bookings = bookings.filter(
+        is_active=True
+    ).count()
+
+    # Total spent
+    total_spent = sum(
+
+        booking.total_price
+
+        for booking in bookings
+
+        if booking.payment_status != "CANCELLED"
+    )
+
+    context = {
+
+        "total_bookings": total_bookings,
+
+        "active_bookings": active_bookings,
+
+        "total_spent": total_spent
+
+    }
+
     return render(
         request,
-        "my_profile.html"
+        "my_profile.html",
+        context
     )
 
 
@@ -1059,3 +1148,4 @@ def cancel_booking(request, booking_id):
     return redirect(
         "my_bookings"
     )
+

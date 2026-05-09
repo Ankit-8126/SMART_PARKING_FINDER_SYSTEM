@@ -5,76 +5,232 @@
     <title>Dashboard</title>
 
     <link rel="stylesheet" href="{% static 'css/mydashboard-style.css' %}">
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Icons -->
+    <!-- Font Awesome -->
     <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
 
 {% include 'nav2.html' %}
 
 <div class="dashboard">
 
-    <!-- Welcome -->
+    <!-- =========================
+         WELCOME SECTION
+    ========================== -->
+
     <div class="welcome">
-        <h2>Welcome back, {{ request.user.first_name }} 👋</h2>
+
+        <h2>
+            Welcome back,
+            {{ request.user.first_name|default:request.user.username }}
+            👋
+        </h2>
+
         <p>Your smart parking dashboard</p>
+
     </div>
 
-    <!-- Quick Actions -->
+
+    <!-- =========================
+         ACTION BUTTONS
+    ========================== -->
+
     <div class="actions">
+
         <a href="{% url 'find_parking' %}" class="btn primary">
-            <i class="fas fa-search"></i> Find Parking
+
+            <i class="fas fa-search"></i>
+
+            Find Parking
+
         </a>
 
         <a href="{% url 'my_bookings' %}" class="btn secondary">
-            <i class="fas fa-calendar"></i> My Bookings
+
+            <i class="fas fa-calendar"></i>
+
+            My Bookings
+
         </a>
+
     </div>
 
-    <!-- Stats -->
+
+    <!-- =========================
+         STATS SECTION
+    ========================== -->
+
     <div class="stats">
+
         <div class="stat-card blue">
+
             <i class="fas fa-calendar-check"></i>
-            <h3>12</h3>
+
+            <h3>{{ total_bookings }}</h3>
+
             <p>Total Bookings</p>
+
         </div>
+
 
         <div class="stat-card green">
+
             <i class="fas fa-car"></i>
-            <h3>5</h3>
+
+            <h3>{{ active_slots }}</h3>
+
             <p>Active Slots</p>
+
         </div>
+
 
         <div class="stat-card purple">
+
             <i class="fas fa-wallet"></i>
-            <h3>₹1200</h3>
+
+            <h3>₹{{ total_spent }}</h3>
+
             <p>Total Spent</p>
+
         </div>
+
     </div>
 
-    <!-- Parking Section -->
+
+    <!-- =========================
+         NEARBY PARKING
+    ========================== -->
+
     <div class="section-header">
+
         <h3>Nearby Parking</h3>
-        <a href="{% url 'find_parking' %}" class="view-all">View All →</a>
+
+        <a href="{% url 'find_parking' %}" class="view-all">
+
+            View All →
+
+        </a>
+
     </div>
+
 
     <div class="cards">
-        <div class="card">
-            <h4>City Mall Parking</h4>
-            <p>📍 Agra</p>
-            <span>₹50/hr</span>
-            <a href="#" class="book-btn">Book Now</a>
-        </div>
+
+        {% for p in parkings %}
 
         <div class="card">
-            <h4>Railway Parking</h4>
-            <p>📍 Agra Cantt</p>
-            <span>₹30/hr</span>
-            <a href="#" class="book-btn">Book Now</a>
+
+            <h4>{{ p.name }}</h4>
+
+            <p>📍 {{ p.address }}</p>
+
+            <span>₹{{ p.price }}/hr</span>
+
+            <a href="{% url 'parking_detail' p.id %}" class="book-btn">
+
+                Book Now
+
+            </a>
+
         </div>
+
+        {% empty %}
+
+        <div class="card">
+
+            <p>No parking available.</p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- =========================
+         RECENT BOOKINGS
+    ========================== -->
+
+    <div class="section-header">
+
+        <h3>Recent Bookings</h3>
+
+    </div>
+
+
+    <div class="recent-bookings">
+
+        {% for b in recent_bookings %}
+
+        <div class="recent-card">
+
+            <h4>{{ b.parking.name }}</h4>
+
+            <p>
+
+                <strong>Hours:</strong>
+
+                {{ b.hours }}
+
+            </p>
+
+            <p>
+
+                <strong>Total:</strong>
+
+                ₹{{ b.total_price }}
+
+            </p>
+
+            <p>
+
+                <strong>Status:</strong>
+
+                {% if b.payment_status == "CANCELLED" %}
+
+                    <span class="cancelled-status">
+
+                        Cancelled
+
+                    </span>
+
+                {% elif b.is_active %}
+
+                    <span class="active-status">
+
+                        Active
+
+                    </span>
+
+                {% else %}
+
+                    <span class="completed-status">
+
+                        Completed
+
+                    </span>
+
+                {% endif %}
+
+            </p>
+
+        </div>
+
+        {% empty %}
+
+        <div class="recent-card">
+
+            <p>No bookings yet.</p>
+
+        </div>
+
+        {% endfor %}
+
     </div>
 
 </div>

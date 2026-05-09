@@ -11,7 +11,11 @@ urlpatterns = [
     path('signup/',views.signup,name='signup'),
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
     path('footer/',views.footer,name='footer'),
-    path('mydashboard/',views.mydashboard,name='mydashboard'),
+    path(
+        'mydashboard/',
+        views.mydashboard,
+        name='mydashboard'
+    ),
     path('logout/', views.logout, name='logout'),
 
     path('forgot/', views.forgot, name='forgot'),
@@ -39,4 +43,6 @@ urlpatterns = [
         views.cancel_booking,
         name='cancel_booking'
     ),
+
+
 ]
