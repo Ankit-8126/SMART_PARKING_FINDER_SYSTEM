@@ -631,12 +631,22 @@ def user_settings(request):
 # FIND PARKING
 # =========================================================
 
+# =========================================================
+# FIND PARKING
+# =========================================================
+
+# =========================================================
+# FIND PARKING
+# =========================================================
+
 @login_required(login_url='login')
 def find_parking_page(request):
 
-    user_lat = request.POST.get("latitude")
-    user_lng = request.POST.get("longitude")
+    # User location from URL
+    user_lat = request.GET.get("lat")
+    user_lng = request.GET.get("lng")
 
+    # All parking data
     parkings = Parking.objects.all()
 
     data = []
@@ -645,6 +655,7 @@ def find_parking_page(request):
 
         distance = None
 
+        # Calculate distance
         if user_lat and user_lng:
 
             try:
@@ -656,10 +667,11 @@ def find_parking_page(request):
                     p.longitude
                 )
 
-            except:
+            except Exception:
 
                 distance = None
 
+        # Store parking data
         data.append({
 
             "id": p.id,
@@ -678,17 +690,39 @@ def find_parking_page(request):
 
             "distance":
                 round(distance, 2)
-                if distance else None
+                if distance is not None
+                else None
         })
 
+    # =====================================================
+    # SORT BY NEAREST DISTANCE
+    # =====================================================
+
+    data.sort(
+
+        key=lambda x:
+
+        x["distance"]
+
+        if x["distance"] is not None
+
+        else 999999
+    )
+
+    # =====================================================
+    # SEND TO HTML
+    # =====================================================
+
     return render(
+
         request,
+
         "find_parking.html",
+
         {
             "parkings": data
         }
     )
-
 
 # =========================================================
 # PROFILE
@@ -933,42 +967,102 @@ def booking_history(request):
 # ALL PARKINGS
 # =========================================================
 
+# =========================================================
+# ALL PARKINGS
+# =========================================================
+
+@login_required(login_url='login')
 def all_parkings(request):
 
+    # Get all parking objects
     parkings = Parking.objects.all()
 
+    # User coordinates from URL
     user_lat = request.GET.get("lat")
     user_lng = request.GET.get("lng")
 
-    if user_lat and user_lng:
+    parking_list = []
 
-        user_lat = float(user_lat)
-        user_lng = float(user_lng)
+    # =====================================================
+    # DISTANCE CALCULATION
+    # =====================================================
 
-        for p in parkings:
+    for p in parkings:
 
-            p.distance = haversine(
-                user_lat,
-                user_lng,
-                p.latitude,
-                p.longitude
-            )
+        distance = None
 
-    else:
+        # Calculate distance only if location available
+        if user_lat and user_lng:
 
-        for p in parkings:
+            try:
 
-            p.distance = None
+                distance = haversine(
 
-    return render(
-        request,
-        "all_parkings.html",
-        {
-            "parkings": parkings
-        }
+                    float(user_lat),
+
+                    float(user_lng),
+
+                    p.latitude,
+
+                    p.longitude
+                )
+
+            except Exception:
+
+                distance = None
+
+        # Add parking data
+        parking_list.append({
+
+            "id": p.id,
+
+            "name": p.name,
+
+            "address": p.address,
+
+            "price": p.price,
+
+            "available_slots": p.available_slots,
+
+            "latitude": p.latitude,
+
+            "longitude": p.longitude,
+
+            "distance":
+                round(distance, 2)
+                if distance is not None
+                else None
+        })
+
+    # =====================================================
+    # SORT BY NEAREST DISTANCE
+    # =====================================================
+
+    parking_list.sort(
+
+        key=lambda x:
+
+        x["distance"]
+
+        if x["distance"] is not None
+
+        else 999999
     )
 
+    # =====================================================
+    # SEND TO TEMPLATE
+    # =====================================================
 
+    return render(
+
+        request,
+
+        "all_parkings.html",
+
+        {
+            "parkings": parking_list
+        }
+    )
 # =========================================================
 # MY BOOKINGS
 # =========================================================

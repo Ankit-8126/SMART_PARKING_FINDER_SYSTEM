@@ -1,207 +1,426 @@
-/* ================= GLOBAL RESET ================= */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
 }
 
-/* ================= BODY ================= */
-body {
-    background: #f4f7fb;
-    color: #0f172a;
+body{
+    background:#f1f5f9;
+    overflow-x:hidden;
 }
 
-/* ================= CONTAINER ================= */
-.container {
-    width: 92%;
-    max-width: 1200px;
-    margin: 40px auto;
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.container{
+    width:92%;
+    max-width:1350px;
+    margin:auto;
+    padding:40px 0 60px;
 }
 
-/* ================= TOPBAR ================= */
-.topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    margin-bottom:35px;
+    flex-wrap:wrap;
 }
 
-.topbar h2 {
-    font-size: 26px;
-    font-weight: 600;
-    color: #0f172a;
+.topbar h2{
+    font-size:34px;
+    font-weight:700;
+    color:#0f172a;
 }
 
-/* ================= BUTTON ================= */
-.btn {
-    background: linear-gradient(90deg, #2563eb, #1e40af);
-    color: white;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: 0.3s;
+
+/* =========================================================
+   LOCATION BUTTON
+========================================================= */
+
+.btn{
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+
+    color:white;
+
+    border:none;
+
+    padding:15px 28px;
+
+    border-radius:16px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:0.3s ease;
+
+    box-shadow:
+        0 10px 25px rgba(37,99,235,0.25);
 }
 
-.btn:hover {
-    transform: scale(1.05);
-    opacity: 0.9;
+.btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 14px 30px rgba(37,99,235,0.35);
 }
 
-/* ================= SEARCH BOX ================= */
-.search-box {
-    margin-bottom: 20px;
+
+/* =========================================================
+   SEARCH BOX
+========================================================= */
+
+.search-box{
+    margin-bottom:35px;
 }
 
-.search-box input {
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: 12px;
-    border: 1px solid #cbd5e1;
-    outline: none;
-    transition: 0.3s;
+.search-box input{
+
+    width:100%;
+
+    padding:18px 20px;
+
+    border:none;
+
+    border-radius:18px;
+
+    background:white;
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,0.06);
+
+    outline:none;
+
+    font-size:15px;
+
+    transition:0.3s;
 }
 
-.search-box input:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+.search-box input:focus{
+
+    box-shadow:
+        0 5px 25px rgba(37,99,235,0.20);
 }
 
-/* ================= GRID ================= */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 20px;
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(320px,1fr));
+
+    gap:28px;
 }
 
-/* ================= CARD ================= */
-.card {
-    background: #ffffff;
-    padding: 18px;
-    border-radius: 16px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-    transition: 0.3s;
-    position: relative;
-    overflow: hidden;
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.card{
+
+    background:white;
+
+    border-radius:24px;
+
+    padding:28px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    transition:0.35s ease;
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,0.07);
 }
 
-.card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 15px 35px rgba(37,99,235,0.2);
+.card:hover{
+
+    transform:
+        translateY(-6px);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,0.12);
 }
 
-/* BLUE TOP BAR */
-.card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 4px;
-    width: 100%;
-    background: linear-gradient(90deg, #2563eb, #1e40af);
+
+/* =========================================================
+   CARD TITLE
+========================================================= */
+
+.name{
+
+    font-size:24px;
+
+    font-weight:700;
+
+    color:#0f172a;
+
+    margin-bottom:14px;
+
+    line-height:1.4;
 }
 
-/* ================= TEXT ================= */
-.name {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 6px;
+
+/* =========================================================
+   META
+========================================================= */
+
+.meta{
+
+    color:#64748b;
+
+    font-size:15px;
+
+    margin-bottom:12px;
+
+    line-height:1.7;
 }
 
-.meta {
-    font-size: 13px;
-    color: #64748b;
-    margin-bottom: 6px;
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+.price{
+
+    font-size:28px;
+
+    font-weight:700;
+
+    color:#2563eb;
+
+    margin:18px 0;
 }
 
-.price {
-    font-size: 14px;
-    font-weight: 600;
-    color: #2563eb;
-    margin-bottom: 6px;
+
+/* =========================================================
+   DISTANCE
+========================================================= */
+
+.distance{
+
+    display:inline-block;
+
+    padding:11px 18px;
+
+    border-radius:40px;
+
+    background:#dcfce7;
+
+    color:#166534;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    margin-top:12px;
 }
 
-.distance {
-    font-size: 13px;
-    color: #0f172a;
-    margin-bottom: 12px;
+.distance2{
+
+    display:inline-block;
+
+    padding:11px 18px;
+
+    border-radius:40px;
+
+    background:#fee2e2;
+
+    color:#991b1b;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    margin-top:12px;
 }
 
-/* ================= BOOK BUTTON ================= */
-.book-btn {
-    display: block;
-    text-align: center;
-    padding: 10px;
-    background: linear-gradient(90deg, #2563eb, #1e40af);
-    color: white;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: 0.3s;
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btns{
+
+    display:flex;
+
+    gap:14px;
+
+    margin-top:28px;
+
+    flex-wrap:wrap;
 }
 
-.book-btn:hover {
-    opacity: 0.9;
-    transform: scale(1.03);
+.view-btn,
+.map-btn{
+
+    flex:1;
+
+    min-width:130px;
+
+    text-align:center;
+
+    text-decoration:none;
+
+    padding:14px;
+
+    border-radius:14px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:0.3s ease;
 }
 
-/* ================= RESPONSIVE ================= */
-@media (max-width: 768px) {
-    .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
+
+/* VIEW BUTTON */
+
+.view-btn{
+
+    background:#2563eb;
+
+    color:white;
+}
+
+.view-btn:hover{
+
+    background:#1d4ed8;
+
+    transform:translateY(-2px);
+}
+
+
+/* MAP BUTTON */
+
+.map-btn{
+
+    background:#0f172a;
+
+    color:white;
+}
+
+.map-btn:hover{
+
+    background:#020617;
+
+    transform:translateY(-2px);
+}
+
+
+/* =========================================================
+   VIEW ALL
+========================================================= */
+
+.view-all{
+
+    margin-top:45px;
+
+    text-align:center;
+}
+
+.view-all a{
+
+    text-decoration:none;
+
+    color:#2563eb;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    transition:0.3s;
+}
+
+.view-all a:hover{
+
+    letter-spacing:1px;
+}
+
+
+/* =========================================================
+   MOBILE RESPONSIVE
+========================================================= */
+
+@media(max-width:768px){
+
+    .container{
+        width:95%;
     }
 
-    .btn {
-        width: 100%;
+    .topbar{
+
+        flex-direction:column;
+
+        align-items:flex-start;
     }
-}
 
-/* ================= SHARED CARD STYLE ================= */
-.book-btn {
-    display: block;
-    text-align: center;
-    padding: 10px;
-    background: linear-gradient(90deg, #2563eb, #1e40af);
-    color: white;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: 0.3s;
-    margin-top: 10px;
-}
+    .topbar h2{
 
-.book-btn:hover {
-    opacity: 0.9;
-    transform: scale(1.03);
-}
+        font-size:26px;
+    }
 
-/* SAME TEXT STYLES */
-.name {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 6px;
-}
+    .btn{
 
-.meta {
-    font-size: 13px;
-    color: #64748b;
-    margin-bottom: 6px;
-}
+        width:100%;
+    }
 
-.price {
-    font-size: 14px;
-    font-weight: 600;
-    color: #2563eb;
-    margin-bottom: 6px;
-}
+    .grid{
 
-.distance {
-    font-size: 13px;
-    color: #0f172a;
-    margin-top: 8px;
+        grid-template-columns:1fr;
+    }
+
+    .card{
+
+        padding:22px;
+    }
+
+    .name{
+
+        font-size:22px;
+    }
+
+    .price{
+
+        font-size:24px;
+    }
+
+    .btns{
+
+        flex-direction:column;
+    }
+
+    .view-btn,
+    .map-btn{
+
+        width:100%;
+    }
 }

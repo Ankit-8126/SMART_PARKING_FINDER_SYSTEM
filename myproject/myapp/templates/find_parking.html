@@ -1,11 +1,22 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Find Parking</title>
 
-    <link rel="stylesheet" href="{% static 'css/find_parking-style.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+          href="{% static 'css/find_parking-style.css' %}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
 </head>
 
 <body>
@@ -14,52 +25,113 @@
 
 <div class="container">
 
+    <!-- TOPBAR -->
     <div class="topbar">
-        <h2>🚗 Find Parking Near You</h2>
 
-        <button class="btn" onclick="getLocation()">📍 My Location</button>
+        <h2>
+            🚗 Find Parking Near You
+        </h2>
+
+        <button class="btn"
+                onclick="getLocation()">
+
+            📍 My Location
+
+        </button>
+
     </div>
 
+    <!-- SEARCH -->
     <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search parking..." onkeyup="filterCards()">
-    </div>
 
-    <!-- Location form -->
-    <form method="POST" id="locationForm">
-        {% csrf_token %}
-        <input type="hidden" name="latitude" id="lat">
-        <input type="hidden" name="longitude" id="lng">
-    </form>
+        <input type="text"
+               id="searchInput"
+               placeholder="Search parking..."
+               onkeyup="filterCards()">
+
+    </div>
 
     <!-- GRID -->
     <div class="grid">
 
+        <!-- ONLY FIRST 6 PARKINGS -->
         {% for p in parkings|slice:":6" %}
+
         <div class="card">
 
-            <h3 class="name">{{ p.name }}</h3>
-            <p class="meta">📍 {{ p.address }}</p>
+            <!-- NAME -->
+            <h3 class="name">
+                {{ p.name }}
+            </h3>
 
-            <p class="price">₹{{ p.price }} / hr</p>
-            <p class="meta">Slots: {{ p.available_slots }}</p>
+            <!-- ADDRESS -->
+            <p class="meta">
+                📍 {{ p.address }}
+            </p>
 
+            <!-- PRICE -->
+            <p class="price">
+                ₹{{ p.price }} / hr
+            </p>
+
+            <!-- AVAILABLE SLOTS -->
+            <p class="meta">
+                🚘 Slots Available:
+                {{ p.available_slots }}
+            </p>
+
+            <!-- DISTANCE -->
             {% if p.distance %}
-                <p class="distance">📍 {{ p.distance }} km away</p>
+
+                <p class="distance">
+                    📍 {{ p.distance }} KM Away
+                </p>
+
             {% else %}
-                <p class="distance">📍 Enable location</p>
+
+                <p class="distance2">
+                    📍 Enable Location
+                </p>
+
             {% endif %}
 
-            <!-- DETAILS PAGE -->
-            <a href="{% url 'parking_detail' p.id %}" class="book-btn">View Details</a>
+            <!-- BUTTONS -->
+            <div class="btns">
+
+                <!-- DETAILS -->
+                <a href="{% url 'parking_detail' p.id %}"
+                   class="view-btn">
+
+                    View Details
+
+                </a>
+
+                <!-- GOOGLE MAP -->
+                <a href="https://www.google.com/maps?q={{p.latitude}},{{p.longitude}}"
+                   target="_blank"
+                   class="map-btn">
+
+                    Open Map
+
+                </a>
+
+            </div>
 
         </div>
+
         {% endfor %}
 
     </div>
 
     <!-- VIEW ALL -->
     <div class="view-all">
-        <a href="{% url 'all_parking' %}">View All Parking →</a>
+
+        <a href="{% url 'all_parking' %}">
+
+            View All Parking →
+
+        </a>
+
     </div>
 
 </div>
@@ -67,36 +139,88 @@
 {% include 'footer.html' %}
 
 <script>
+
+// =====================================================
+// GET USER LOCATION
+// =====================================================
+
 function getLocation() {
-    navigator.geolocation.getCurrentPosition(function(pos){
-        document.getElementById("lat").value = pos.coords.latitude;
-        document.getElementById("lng").value = pos.coords.longitude;
-        document.getElementById("locationForm").submit();
-    });
+
+    if (navigator.geolocation) {
+
+        navigator.geolocation.getCurrentPosition(
+
+            function(pos){
+
+                let lat = pos.coords.latitude;
+                let lng = pos.coords.longitude;
+                let accuracy = pos.coords.accuracy;
+
+                console.log("Latitude:", lat);
+                console.log("Longitude:", lng);
+                console.log("Accuracy:", accuracy);
+
+                // Accuracy warning
+                if (accuracy > 100) {
+
+                    alert(
+                        "Low accuracy location detected. Turn ON GPS or WiFi."
+                    );
+                }
+
+                // Redirect with coordinates
+                window.location.href =
+                    `?lat=${lat}&lng=${lng}`;
+
+            },
+
+            function(error){
+
+                alert(
+                    "Location permission denied"
+                );
+
+            },
+
+            {
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 0
+            }
+        );
+
+    } else {
+
+        alert(
+            "Geolocation not supported"
+        );
+    }
 }
+
+
+// =====================================================
+// SEARCH FILTER
+// =====================================================
 
 function filterCards(){
-    let input = document.getElementById("searchInput").value.toLowerCase();
-    document.querySelectorAll(".card").forEach(card=>{
-        let name = card.querySelector(".name").innerText.toLowerCase();
-        card.style.display = name.includes(input) ? "block" : "none";
-    });
-}
 
+    let input = document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase();
 
+    document.querySelectorAll(".card")
+    .forEach(card=>{
 
-function bookParking(id){
-    fetch("/api/book-parking/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": "{{ csrf_token }}"
-        },
-        body: JSON.stringify({parking_id: id})
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert(data.message || data.error);
+        let name = card
+            .querySelector(".name")
+            .innerText
+            .toLowerCase();
+
+        card.style.display =
+            name.includes(input)
+            ? "block"
+            : "none";
     });
 }
 
