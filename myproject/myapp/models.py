@@ -80,9 +80,6 @@ class Booking(models.Model):
         default=True
     )
 
-    razorpay_order_id = models.CharField(max_length=255, null=True, blank=True)
-    payment_id = models.CharField(max_length=255, null=True, blank=True)
-
     def __str__(self):
 
         return f"{self.user.username} - {self.parking.name}"
