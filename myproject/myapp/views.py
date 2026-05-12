@@ -1,9 +1,9 @@
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from django.utils.http import (
@@ -16,9 +16,6 @@ from django.utils.encoding import (
     force_str
 )
 
-from django.core.mail import send_mail
-from django.http import HttpResponse
-
 from django.contrib.auth.tokens import (
     default_token_generator
 )
@@ -26,87 +23,14 @@ from django.contrib.auth.tokens import (
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
-from django.contrib.sites.shortcuts import (
-    get_current_site
-)
-
-from django.conf import settings
+from django.core.mail import send_mail
+from django.http import HttpResponse
+from django.conf import settings as django_settings
 
 from django.db import transaction
 
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-
-from .tokens import account_activation_token
-from .models import Parking, Booking
-from .utils import haversine
-
-
-# =========================================================
-# BASIC PAGES
-# =========================================================
 from django.utils import timezone
 from datetime import timedelta
-def home(request):
-    return render(request, "home.html")
-
-
-def about(request):
-    return render(request, "about.html")
-
-
-def features(request):
-    return render(request, "features.html")
-
-
-def contact(request):
-    return render(request, "contact.html")
-
-
-# =========================================================
-# LOGIN
-# =========================================================
-
-# ================= IMPORTS =================
-
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.models import User
-
-from django.contrib.auth import authenticate
-from django.contrib.auth import login as auth_login
-from django.contrib.auth import logout as auth_logout
-
-from django.contrib import messages
-
-from django.utils.http import (
-    urlsafe_base64_encode,
-    urlsafe_base64_decode
-)
-
-from django.utils.encoding import (
-    force_bytes,
-    force_str
-)
-
-from django.core.mail import send_mail
-from django.http import HttpResponse
-
-from django.contrib.auth.tokens import (
-    default_token_generator
-)
-
-from django.core.validators import validate_email
-from django.core.exceptions import ValidationError
-
-from django.contrib.sites.shortcuts import (
-    get_current_site
-)
-
-# ✅ IMPORTANT FIX
-from django.conf import settings as django_settings
-
-from django.db import transaction
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -137,82 +61,12 @@ def contact(request):
 
 
 # =========================================================
-# LOGIN
-# =========================================================
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.models import User
-
-from django.contrib.auth import authenticate
-from django.contrib.auth import login as auth_login
-from django.contrib.auth import logout as auth_logout
-
-from django.contrib import messages
-
-from django.utils.http import (
-    urlsafe_base64_encode,
-    urlsafe_base64_decode
-)
-
-from django.utils.encoding import (
-    force_bytes,
-    force_str
-)
-
-from django.core.mail import send_mail
-from django.http import HttpResponse
-
-from django.contrib.auth.tokens import (
-    default_token_generator
-)
-
-from django.core.validators import validate_email
-from django.core.exceptions import ValidationError
-
-from django.contrib.sites.shortcuts import (
-    get_current_site
-)
-
-# ✅ IMPORTANT FIX
-from django.conf import settings as django_settings
-
-from django.db import transaction
-
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-
-from .tokens import account_activation_token
-from .models import Parking, Booking
-from .utils import haversine
-
-
-# =========================================================
-# BASIC PAGES
-# =========================================================
-
-def home(request):
-    return render(request, "home.html")
-
-
-def about(request):
-    return render(request, "about.html")
-
-
-def features(request):
-    return render(request, "features.html")
-
-
-def contact(request):
-    return render(request, "contact.html")
-
-
-# =========================================================
-# LOGIN
+# USER LOGIN
 # =========================================================
 
 def login(request):
 
-    if request.method == 'POST':
+    if request.method == "POST":
 
         email = request.POST.get("email")
         password = request.POST.get("password")
@@ -229,7 +83,7 @@ def login(request):
 
                 auth_login(request, user)
 
-                return redirect('mydashboard')
+                return redirect("mydashboard")
 
             else:
 
@@ -249,28 +103,27 @@ def login(request):
 
 
 # =========================================================
-# SIGNUP
+# USER SIGNUP
 # =========================================================
 
 def signup(request):
 
     if request.method == "POST":
 
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
 
         try:
-
             validate_email(email)
 
         except ValidationError:
 
             return render(
                 request,
-                'signup.html',
+                "signup.html",
                 {
-                    'error': 'Invalid email format'
+                    "error": "Invalid email format"
                 }
             )
 
@@ -278,9 +131,9 @@ def signup(request):
 
             return render(
                 request,
-                'signup.html',
+                "signup.html",
                 {
-                    'error': 'Email already exists'
+                    "error": "Email already exists"
                 }
             )
 
@@ -298,14 +151,9 @@ def signup(request):
             force_bytes(user.pk)
         )
 
-        token = account_activation_token.make_token(
-            user
-        )
+        token = account_activation_token.make_token(user)
 
-        current_site = get_current_site(request)
-
-        activation_link = (
-            f"https://{current_site.domain}"
+        activation_link = request.build_absolute_uri(
             f"/activate/{uid}/{token}/"
         )
 
@@ -313,7 +161,7 @@ def signup(request):
 
             send_mail(
 
-                subject='Activate Your Smart Parking Account',
+                subject="Activate Your Smart Parking Account",
 
                 message=f"""
 Hi {name},
@@ -335,10 +183,10 @@ ignore this email.
 
             return render(
                 request,
-                'signup.html',
+                "signup.html",
                 {
-                    'message':
-                        'Verification link sent to your email'
+                    "message":
+                    "Verification link sent to your email"
                 }
             )
 
@@ -346,14 +194,14 @@ ignore this email.
 
             return render(
                 request,
-                'signup.html',
+                "signup.html",
                 {
-                    'error':
-                        f'Email sending failed: {str(e)}'
+                    "error":
+                    f"Email sending failed: {str(e)}"
                 }
             )
 
-    return render(request, 'signup.html')
+    return render(request, "signup.html")
 
 
 # =========================================================
@@ -391,7 +239,7 @@ def activate(request, uidb64, token):
             "Account activated successfully"
         )
 
-        return redirect('login')
+        return redirect("login")
 
     else:
 
@@ -430,14 +278,9 @@ def forgot(request):
             force_bytes(user.pk)
         )
 
-        token = default_token_generator.make_token(
-            user
-        )
+        token = default_token_generator.make_token(user)
 
-        current_site = get_current_site(request)
-
-        reset_link = (
-            f"https://{current_site.domain}"
+        reset_link = request.build_absolute_uri(
             f"/reset/{uid}/{token}/"
         )
 
@@ -445,7 +288,7 @@ def forgot(request):
 
             send_mail(
 
-                subject='Reset Your Password',
+                subject="Reset Your Password",
 
                 message=f"""
 Click below link to reset password:
@@ -468,7 +311,7 @@ ignore this email.
                 "forgot.html",
                 {
                     "message":
-                        "Reset link sent to your email"
+                    "Reset link sent to your email"
                 }
             )
 
@@ -479,7 +322,7 @@ ignore this email.
                 "forgot.html",
                 {
                     "error":
-                        f"Email sending failed: {str(e)}"
+                    f"Email sending failed: {str(e)}"
                 }
             )
 
@@ -515,9 +358,7 @@ def reset_password(request, uidb64, token):
 
         if request.method == "POST":
 
-            new_password = request.POST.get(
-                'password'
-            )
+            new_password = request.POST.get("password")
 
             user.set_password(new_password)
 
@@ -528,9 +369,9 @@ def reset_password(request, uidb64, token):
                 "Password reset successful"
             )
 
-            return redirect('login')
+            return redirect("login")
 
-        return render(request, 'reset.html')
+        return render(request, "reset.html")
 
     else:
 
@@ -543,68 +384,45 @@ def reset_password(request, uidb64, token):
 # DASHBOARD
 # =========================================================
 
-
-
-# =========================================================
-# DASHBOARD
-# =========================================================
-
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from .models import Booking, Parking
-
-
 @login_required
 def mydashboard(request):
 
-    # User bookings
     bookings = Booking.objects.filter(
         user=request.user
-    ).order_by('-booked_at')
+    ).order_by("-booked_at")
 
-    # Total bookings
     total_bookings = bookings.exclude(
         payment_status="CANCELLED"
     ).count()
 
-    # Active bookings
     active_slots = bookings.filter(
         is_active=True
     ).count()
 
-    # Total spent
-    # CANCELLED bookings excluded
     total_spent = sum(
-
         booking.total_price
-
         for booking in bookings
-
         if booking.payment_status != "CANCELLED"
     )
 
-    # Nearby parking cards
     parkings = Parking.objects.all()[:4]
 
     context = {
 
-        'total_bookings': total_bookings,
-
-        'active_slots': active_slots,
-
-        'total_spent': total_spent,
-
-        'parkings': parkings,
-
-        'recent_bookings': bookings[:4],
-
+        "total_bookings": total_bookings,
+        "active_slots": active_slots,
+        "total_spent": total_spent,
+        "parkings": parkings,
+        "recent_bookings": bookings[:4],
     }
 
     return render(
         request,
-        'mydashboard.html',
+        "mydashboard.html",
         context
     )
+
+
 # =========================================================
 # LOGOUT
 # =========================================================
@@ -613,27 +431,8 @@ def logout(request):
 
     auth_logout(request)
 
-    return redirect('login')
+    return redirect("login")
 
-
-# =========================================================
-# SETTINGS PAGE
-# =========================================================
-
-@login_required(login_url='login')
-def user_settings(request):
-
-    return render(
-        request,
-        "settings.html"
-    )
-# =========================================================
-# FIND PARKING
-# =========================================================
-
-# =========================================================
-# FIND PARKING
-# =========================================================
 
 # =========================================================
 # FIND PARKING
@@ -642,11 +441,9 @@ def user_settings(request):
 @login_required(login_url='login')
 def find_parking_page(request):
 
-    # User location from URL
     user_lat = request.GET.get("lat")
     user_lng = request.GET.get("lng")
 
-    # All parking data
     parkings = Parking.objects.all()
 
     data = []
@@ -655,7 +452,6 @@ def find_parking_page(request):
 
         distance = None
 
-        # Calculate distance
         if user_lat and user_lng:
 
             try:
@@ -671,32 +467,21 @@ def find_parking_page(request):
 
                 distance = None
 
-        # Store parking data
         data.append({
 
             "id": p.id,
-
             "name": p.name,
-
             "address": p.address,
-
             "price": p.price,
-
             "available_slots": p.available_slots,
-
             "latitude": p.latitude,
-
             "longitude": p.longitude,
 
             "distance":
-                round(distance, 2)
-                if distance is not None
-                else None
+            round(distance, 2)
+            if distance is not None
+            else None
         })
-
-    # =====================================================
-    # SORT BY NEAREST DISTANCE
-    # =====================================================
 
     data.sort(
 
@@ -709,10 +494,6 @@ def find_parking_page(request):
         else 999999
     )
 
-    # =====================================================
-    # SEND TO HTML
-    # =====================================================
-
     return render(
 
         request,
@@ -724,6 +505,7 @@ def find_parking_page(request):
         }
     )
 
+
 # =========================================================
 # PROFILE
 # =========================================================
@@ -731,22 +513,18 @@ def find_parking_page(request):
 @login_required(login_url='login')
 def my_profile(request):
 
-    # User bookings
     bookings = Booking.objects.filter(
         user=request.user
     )
 
-    # Total bookings
     total_bookings = bookings.exclude(
         payment_status="CANCELLED"
     ).count()
 
-    # Active bookings
     active_bookings = bookings.filter(
         is_active=True
     ).count()
 
-    # Total spent
     total_spent = sum(
 
         booking.total_price
@@ -759,11 +537,8 @@ def my_profile(request):
     context = {
 
         "total_bookings": total_bookings,
-
         "active_bookings": active_bookings,
-
         "total_spent": total_spent
-
     }
 
     return render(
@@ -844,21 +619,16 @@ def nearby_parkings(request):
         results.append({
 
             "id": p.id,
-
             "name": p.name,
-
             "address": p.address,
-
             "available_slots": p.available_slots,
-
             "price": p.price,
-
             "distance": round(distance, 2),
 
             "status":
-                "Available"
-                if p.available_slots > 0
-                else "Full"
+            "Available"
+            if p.available_slots > 0
+            else "Full"
         })
 
     results.sort(
@@ -873,7 +643,7 @@ def nearby_parkings(request):
 
 
 # =========================================================
-# BOOK PARKING
+# BOOK PARKING API
 # =========================================================
 
 @api_view(['POST'])
@@ -901,7 +671,6 @@ def book_parking(request):
                 )
 
             parking.available_slots -= 1
-
             parking.save()
 
             Booking.objects.create(
@@ -912,7 +681,7 @@ def book_parking(request):
         return Response(
             {
                 "message":
-                    "Booking Confirmed"
+                "Booking Confirmed"
             }
         )
 
@@ -921,7 +690,7 @@ def book_parking(request):
         return Response(
             {
                 "error":
-                    "Parking not found"
+                "Parking not found"
             },
             status=404
         )
@@ -944,16 +713,14 @@ def booking_history(request):
 
         data.append({
 
-            "parking":
-                b.parking.name,
+            "parking": b.parking.name,
 
-            "user":
-                b.user.username,
+            "user": b.user.username,
 
             "time":
-                b.booked_at.strftime(
-                    "%Y-%m-%d %H:%M"
-                )
+            b.booked_at.strftime(
+                "%Y-%m-%d %H:%M"
+            )
         })
 
     return Response(
@@ -967,43 +734,28 @@ def booking_history(request):
 # ALL PARKINGS
 # =========================================================
 
-# =========================================================
-# ALL PARKINGS
-# =========================================================
-
 @login_required(login_url='login')
 def all_parkings(request):
 
-    # Get all parking objects
     parkings = Parking.objects.all()
 
-    # User coordinates from URL
     user_lat = request.GET.get("lat")
     user_lng = request.GET.get("lng")
 
     parking_list = []
 
-    # =====================================================
-    # DISTANCE CALCULATION
-    # =====================================================
-
     for p in parkings:
 
         distance = None
 
-        # Calculate distance only if location available
         if user_lat and user_lng:
 
             try:
 
                 distance = haversine(
-
                     float(user_lat),
-
                     float(user_lng),
-
                     p.latitude,
-
                     p.longitude
                 )
 
@@ -1011,32 +763,21 @@ def all_parkings(request):
 
                 distance = None
 
-        # Add parking data
         parking_list.append({
 
             "id": p.id,
-
             "name": p.name,
-
             "address": p.address,
-
             "price": p.price,
-
             "available_slots": p.available_slots,
-
             "latitude": p.latitude,
-
             "longitude": p.longitude,
 
             "distance":
-                round(distance, 2)
-                if distance is not None
-                else None
+            round(distance, 2)
+            if distance is not None
+            else None
         })
-
-    # =====================================================
-    # SORT BY NEAREST DISTANCE
-    # =====================================================
 
     parking_list.sort(
 
@@ -1049,10 +790,6 @@ def all_parkings(request):
         else 999999
     )
 
-    # =====================================================
-    # SEND TO TEMPLATE
-    # =====================================================
-
     return render(
 
         request,
@@ -1063,6 +800,8 @@ def all_parkings(request):
             "parkings": parking_list
         }
     )
+
+
 # =========================================================
 # MY BOOKINGS
 # =========================================================
@@ -1089,19 +828,15 @@ def my_bookings(request):
             and
 
             current_time >= booking.end_time
-
         ):
 
             booking.is_active = False
-
             booking.payment_status = "COMPLETED"
-
             booking.save()
 
             parking = booking.parking
 
             parking.available_slots += 1
-
             parking.save()
 
     return render(
@@ -1111,6 +846,7 @@ def my_bookings(request):
             "bookings": bookings
         }
     )
+
 
 # =========================================================
 # PARKING DETAIL
@@ -1133,11 +869,9 @@ def parking_detail(request, id):
     )
 
 
-
-from django.conf import settings
-from django.db import transaction
-
-
+# =========================================================
+# BOOK NOW
+# =========================================================
 
 @login_required
 def book_now(request, parking_id):
@@ -1172,27 +906,19 @@ def book_now(request, parking_id):
             hours=hours
         )
 
-        booking = Booking.objects.create(
+        Booking.objects.create(
 
             user=request.user,
-
             parking=parking,
-
             hours=hours,
-
             total_price=total_price,
-
             start_time=start_time,
-
             end_time=end_time,
-
             payment_status="SUCCESS",
-
             is_active=True
         )
 
         parking.available_slots -= 1
-
         parking.save()
 
         messages.success(
@@ -1200,9 +926,7 @@ def book_now(request, parking_id):
             "Parking Booked Successfully"
         )
 
-        return redirect(
-            "my_bookings"
-        )
+        return redirect("my_bookings")
 
     return render(
         request,
@@ -1211,6 +935,11 @@ def book_now(request, parking_id):
             "parking": parking
         }
     )
+
+
+# =========================================================
+# CANCEL BOOKING
+# =========================================================
 
 @login_required
 def cancel_booking(request, booking_id):
@@ -1229,16 +958,77 @@ def cancel_booking(request, booking_id):
         parking = booking.parking
 
         parking.available_slots += 1
-
         parking.save()
 
         booking.is_active = False
-
         booking.payment_status = "CANCELLED"
-
         booking.save()
 
-    return redirect(
-        "my_bookings"
+    return redirect("my_bookings")
+
+
+# =========================================================
+# USER SETTINGS
+# =========================================================
+
+@login_required(login_url='login')
+def user_settings(request):
+
+    return render(
+        request,
+        "settings.html"
+    )
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
+from datetime import timedelta
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
+from .models import Booking
+
+
+@login_required(login_url='login')
+def extend_booking(request, booking_id):
+
+    booking = get_object_or_404(
+        Booking,
+        id=booking_id,
+        user=request.user
     )
 
+    if request.method == "POST":
+
+        try:
+            extra_hours = int(request.POST.get("extra_hours"))
+        except:
+            messages.error(request, "Invalid hours")
+            return redirect("my_bookings")
+
+        if extra_hours <= 0:
+            messages.error(request, "Hours must be greater than 0")
+            return redirect("my_bookings")
+
+        now = timezone.now()
+
+        # 💡 CASE 1: booking already expired
+        if booking.end_time < now:
+            booking.start_time = now
+            booking.end_time = now + timedelta(hours=extra_hours)
+            booking.hours = extra_hours
+        else:
+            # 💡 CASE 2: active booking
+            booking.end_time += timedelta(hours=extra_hours)
+            booking.hours += extra_hours
+
+        # 💰 price update
+        booking.total_price += extra_hours * booking.parking.price
+
+        booking.is_active = True
+        booking.save()
+
+        messages.success(request, "Booking extended successfully!")
+        return redirect("my_bookings")
+
+    return render(request, "extend_booking.html", {
+        "booking": booking
+    })

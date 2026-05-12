@@ -12,10 +12,15 @@ class UserProfile(models.Model):
 
     name = models.CharField(max_length=100)
 
-    email = models.EmailField(unique=True)
+    email = models.EmailField(
+        unique=True,
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
-        return self.email
+
+        return self.email if self.email else self.user.username
 
 
 class Parking(models.Model):
@@ -33,6 +38,7 @@ class Parking(models.Model):
     longitude = models.FloatField()
 
     def __str__(self):
+
         return self.name
 
 
@@ -73,6 +79,9 @@ class Booking(models.Model):
     is_active = models.BooleanField(
         default=True
     )
+
+    razorpay_order_id = models.CharField(max_length=255, null=True, blank=True)
+    payment_id = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
 

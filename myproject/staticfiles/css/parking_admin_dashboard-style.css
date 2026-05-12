@@ -1,0 +1,157 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+}
+
+/* CONTAINER */
+
+.dashboard-container{
+    width:90%;
+    margin:40px auto;
+}
+
+/* HEADER */
+
+.dashboard-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:40px;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+.dashboard-header h1{
+    font-size:36px;
+    color:#111827;
+}
+
+.dashboard-header p{
+    color:#6b7280;
+    margin-top:5px;
+}
+
+.add-btn{
+    background:#2563eb;
+    color:white;
+    padding:14px 24px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:600;
+    transition:.3s;
+}
+
+.add-btn:hover{
+    background:#1e40af;
+}
+
+/* STATS */
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+    margin-bottom:50px;
+}
+
+.stat-card{
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 4px 20px rgba(0,0,0,.08);
+    text-align:center;
+}
+
+.stat-card h2{
+    font-size:38px;
+    color:#2563eb;
+    margin-bottom:10px;
+}
+
+.stat-card p{
+    color:#6b7280;
+    font-size:15px;
+}
+
+/* PARKINGS */
+
+.parking-section h2{
+    margin-bottom:25px;
+    color:#111827;
+}
+
+.parking-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:25px;
+}
+
+.parking-card{
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 4px 20px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.parking-card:hover{
+    transform:translateY(-5px);
+}
+
+.parking-card h3{
+    color:#111827;
+    margin-bottom:15px;
+}
+
+.parking-card p{
+    color:#6b7280;
+    margin-bottom:10px;
+}
+
+/* BUTTONS */
+
+.card-buttons{
+    margin-top:20px;
+    display:flex;
+    gap:15px;
+}
+
+.edit-btn{
+    flex:1;
+    background:#2563eb;
+    color:white;
+    text-align:center;
+    padding:12px;
+    border-radius:10px;
+    text-decoration:none;
+}
+
+.delete-btn{
+    flex:1;
+    background:#ef4444;
+    color:white;
+    text-align:center;
+    padding:12px;
+    border-radius:10px;
+    text-decoration:none;
+}
+
+/* EMPTY */
+
+.empty-box{
+    background:white;
+    padding:50px;
+    border-radius:18px;
+    text-align:center;
+    box-shadow:0 4px 20px rgba(0,0,0,.08);
+}
+
+.empty-box h3{
+    margin-bottom:10px;
+}

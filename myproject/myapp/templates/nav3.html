@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkNova | Smart Parking Finder System</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="{%static 'css/nav2-style.css' %}">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+    <div class="logo">ParkNova</div>
+
+    <ul class="nav-links">
+        <li><a href="{% url 'parking_admin_dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'add_parking' %}">Add Parking</a></li>
+        <li><a href="#">My Bookings</a></li>
+        <li><a href="#">Revenue</a></li>
+    </ul>
+
+    <div class="profile-menu">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="profile-icon">
+
+        <div class="dropdown">
+            <a href="{% url 'my_profile' %}">My Profile</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+</nav>
+
+</body>
+
+</html>

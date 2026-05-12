@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Extend Booking</title>
+
+    <link rel="stylesheet" href="{% static 'css/extend_booking-style.css' %}">
+
+</head>
+<body>
+
+{% include 'nav2.html' %}
+
+<div class="extend-container">
+
+    <div class="box">
+
+        <h2>⏱ Extend Your Booking</h2>
+
+        <p><b>Parking:</b> {{ booking.parking.name }}</p>
+        <p><b>Current Hours:</b> {{ booking.hours }}</p>
+        <p><b>End Time:</b> {{ booking.end_time }}</p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>Extra Hours</label>
+            <input type="number" name="extra_hours" min="1" required>
+
+            <button type="submit">Extend Now</button>
+        </form>
+
+    </div>
+
+</div>
+
+{% include 'footer.html' %}
+
+</body>
+</html>

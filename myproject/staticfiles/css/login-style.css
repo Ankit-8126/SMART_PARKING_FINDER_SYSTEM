@@ -1,95 +1,121 @@
-/* 🔥 RESET */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
 }
 
-/* 🌍 BODY */
-body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(120deg, #4facfe, #00f2fe);
+body{
+    background:#f4f7fb;
 }
 
-/* 📦 CONTAINER */
-.auth-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 90vh;
+.auth-container{
+    min-height:80vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px 20px;
 }
 
-/* 🧾 BOX */
-.auth-box {
-    background: #fff;
-    padding: 30px;
-    width: 350px;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-    text-align: center;
+.auth-box{
+    width:100%;
+    max-width:420px;
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.1);
 }
 
-/* 📝 TITLE */
-.auth-box h2 {
-    margin-bottom: 20px;
+.auth-box h2{
+    text-align:center;
+    margin-bottom:30px;
+    color:#2563eb;
 }
 
-/* 🔡 INPUTS */
-.auth-box input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.auth-box form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
 }
 
-/* 🔘 BUTTON */
-.auth-box button {
-    width: 100%;
-    padding: 10px;
-    background: #4facfe;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.auth-box input,
+.auth-box select{
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:15px;
+    outline:none;
 }
 
-.auth-box button:hover {
-    background: #007bff;
+.auth-box input:focus,
+.auth-box select:focus{
+    border-color:#2563eb;
 }
 
-/* 🔗 LINKS */
-.auth-box a {
-    color: #007bff;
-    text-decoration: none;
+.auth-box button{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:14px;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
 }
 
-.auth-box a:hover {
-    text-decoration: underline;
+.auth-box button:hover{
+    background:#1d4ed8;
 }
 
-/* 🚨 ALERT MESSAGES */
-.alert {
-    margin-top: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
+.toggle-text{
+    text-align:center;
+    margin-top:20px;
 }
 
-/* SUCCESS */
-.alert.success {
-    background: #d4edda;
-    color: #155724;
+.toggle-text a{
+    color:#2563eb;
+    text-decoration:none;
+    font-weight:600;
 }
 
-/* ERROR */
-.alert.error {
-    background: #f8d7da;
-    color: #721c24;
+.success-msg{
+    color:green;
+    text-align:center;
+    margin-top:15px;
 }
 
-/* WARNING */
-.alert.warning {
-    background: #fff3cd;
-    color: #856404;
+.error-msg{
+    color:red;
+    text-align:center;
+    margin-top:15px;
+}
+
+@media(max-width:500px){
+
+    .auth-box{
+        padding:25px;
+    }
+
+}
+
+/* SELECT BOX */
+
+.auth-box select{
+
+    width:100%;
+
+    padding:14px;
+
+    margin-bottom:15px;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+    outline:none;
+
+    font-size:15px;
+
+    background:#fff;
 }

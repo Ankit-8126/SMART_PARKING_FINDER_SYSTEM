@@ -198,3 +198,32 @@ body{
         font-size:20px;
     }
 }
+
+.extend-btn{
+    width:100%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:13px 18px;
+
+    background:var(--primary);
+    color:white;
+
+    text-decoration:none;
+
+    border-radius:12px;
+
+    font-size:14px;
+    font-weight:600;
+
+    transition:0.3s ease;
+
+    margin-bottom:10px;
+}
+
+.extend-btn:hover{
+    background:var(--primary-light);
+    transform:translateY(-2px);
+}

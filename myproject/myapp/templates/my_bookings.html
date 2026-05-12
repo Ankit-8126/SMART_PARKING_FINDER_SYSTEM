@@ -2,7 +2,6 @@
 
 <!DOCTYPE html>
 <html>
-
 <head>
 
     <title>My Bookings</title>
@@ -20,9 +19,7 @@
 
 <div class="container">
 
-    <h2 class="title">
-        📦 My Bookings
-    </h2>
+    <h2 class="title">📦 My Bookings</h2>
 
     <div class="grid">
 
@@ -30,76 +27,57 @@
 
         <div class="booking-card">
 
-            <!-- TOP CONTENT -->
+            <!-- CONTENT -->
             <div class="card-content">
 
-                <h3>
-                    {{ b.parking.name }}
-                </h3>
+                <h3>{{ b.parking.name }}</h3>
+
+                <p>💰 ₹{{ b.total_price }}</p>
+
+                <p>⏰ {{ b.hours }} Hours</p>
+
+                <p>🕒 Start: {{ b.start_time }}</p>
+
+                <p>🛑 End: {{ b.end_time }}</p>
 
                 <p>
-                    💰 ₹{{ b.total_price }}
-                </p>
-
-                <p>
-                    ⏰ {{ b.hours }} Hours
-                </p>
-
-                <p>
-                    🕒 Start:
-                    {{ b.start_time }}
-                </p>
-
-                <p>
-                    🛑 End:
-                    {{ b.end_time }}
-                </p>
-
-                <p>
-
                     Status:
 
                     {% if b.payment_status == "COMPLETED" %}
-
-                        <span class="completed">
-                            Completed
-                        </span>
+                        <span class="status completed">Completed</span>
 
                     {% elif b.payment_status == "CANCELLED" %}
-
-                        <span class="cancelled">
-                            Cancelled
-                        </span>
+                        <span class="status cancelled">Cancelled</span>
 
                     {% else %}
-
-                        <span class="active">
-                            Active
-                        </span>
-
+                        <span class="status active">Active</span>
                     {% endif %}
-
                 </p>
 
             </div>
 
-            <!-- BOTTOM BUTTON -->
+            <!-- BUTTONS -->
             <div class="card-bottom">
 
                 {% if b.is_active and b.payment_status != "COMPLETED" %}
 
-                <a href="{% url 'cancel_booking' b.id %}"
-                   class="cancel-btn">
+                    <a href="{% url 'extend_booking' b.id %}" class="extend-btn">
+                        ⏱ Extend Time
+                    </a>
 
-                    Cancel Booking
-
-                </a>
+                    <a href="{% url 'cancel_booking' b.id %}" class="cancel-btn">
+                        Cancel
+                    </a>
 
                 {% endif %}
 
             </div>
 
         </div>
+
+        {% empty %}
+
+        <p>No bookings found.</p>
 
         {% endfor %}
 
@@ -110,5 +88,4 @@
 {% include 'footer.html' %}
 
 </body>
-
 </html>

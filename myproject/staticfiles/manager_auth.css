@@ -1,0 +1,57 @@
+body {
+    font-family: Arial;
+    background: linear-gradient(to right, #e3f2fd, #fce4ec);
+}
+
+/* Common box */
+.auth-box {
+    width: 380px;
+    margin: 90px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+/* Input fields */
+.auth-box input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* Buttons */
+.auth-box button {
+    width: 95%;
+    padding: 10px;
+    background: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.auth-box button:hover {
+    background: #0d47a1;
+}
+
+/* Messages */
+.success {
+    color: green;
+    font-weight: bold;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+/* Links */
+.auth-box a {
+    text-decoration: none;
+    color: #1976d2;
+}

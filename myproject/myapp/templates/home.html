@@ -6,9 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ParkNova | Smart Parking Finder System</title>
 
-
     <!-- External CSS -->
-    <link rel="stylesheet" href="{%static 'css/home-style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home-style.css' %}">
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -17,43 +16,76 @@
 <body>
 
 {% include 'navbar.html' %}
+
 <!-- ================= HERO SECTION ================= -->
 <section class="hero">
-    <div class="hero-content">
-        <h1>Find Parking in Seconds 🚀</h1>
-        <p>Real-time smart parking system to save your time & fuel.</p>
 
-        <button class="btn" onclick="window.location.href='{% url 'login' %}'">
-             Get Started
-       </button>
-        
+    <div class="hero-content">
+
+        <h1>Find Parking in Seconds 🚀</h1>
+
+        <p>
+            Real-time smart parking system to save your time & fuel.
+        </p>
+
+        <div class="hero-buttons">
+
+            <!-- USER BUTTON -->
+            <button class="btn user-btn"
+                    onclick="window.location.href='{% url 'login' %}'">
+
+                Get Started
+
+            </button>
+
+        </div>
+
     </div>
+
 </section>
 
 <!-- ================= FEATURES ================= -->
 <section class="features">
+
     <h2>Why Choose Us?</h2>
 
     <div class="feature-container">
 
         <div class="card">
+
             <h3>📍 Live Location</h3>
-            <p>Find nearby parking spots instantly with real-time tracking.</p>
+
+            <p>
+                Find nearby parking spots instantly with real-time tracking.
+            </p>
+
         </div>
 
         <div class="card">
+
             <h3>⚡ Instant Booking</h3>
-            <p>Reserve your parking slot in seconds without hassle.</p>
+
+            <p>
+                Reserve your parking slot in seconds without hassle.
+            </p>
+
         </div>
 
         <div class="card">
+
             <h3>💰 Affordable</h3>
-            <p>Compare prices and choose the best parking option.</p>
+
+            <p>
+                Compare prices and choose the best parking option.
+            </p>
+
         </div>
 
     </div>
+
 </section>
 
 {% include 'footer.html' %}
+
 </body>
 </html>

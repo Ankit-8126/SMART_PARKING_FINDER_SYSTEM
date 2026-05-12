@@ -45,4 +45,13 @@ urlpatterns = [
     ),
 
 
+path(
+    'booking/extend/<int:booking_id>/',
+    views.extend_booking,
+    name='extend_booking'
+),
+
+
+
+
 ]

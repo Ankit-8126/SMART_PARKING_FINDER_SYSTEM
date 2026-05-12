@@ -1,0 +1,185 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+/* ===================================
+   BODY
+=================================== */
+
+body{
+
+    background:#f1f5f9;
+
+    min-height:100vh;
+
+    padding:120px 20px 80px;
+
+    overflow-x:hidden;
+}
+
+/* ===================================
+   FORM CONTAINER
+=================================== */
+
+.form-container{
+
+    width:100%;
+
+    max-width:500px;
+
+    background:#ffffff;
+
+    margin:auto;
+
+    padding:40px;
+
+    border-radius:20px;
+
+    box-shadow:0 10px 35px rgba(0,0,0,0.12);
+
+    position:relative;
+
+    z-index:1;
+}
+
+/* ===================================
+   TITLE
+=================================== */
+
+.form-container h1{
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+    color:#0f172a;
+
+    font-size:32px;
+
+    font-weight:700;
+}
+
+/* ===================================
+   FORM
+=================================== */
+
+.form-container form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+}
+
+/* ===================================
+   INPUTS
+=================================== */
+
+.form-container input{
+
+    width:100%;
+
+    padding:15px 18px;
+
+    border:1px solid #d1d5db;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:0.3s;
+
+    background:#f8fafc;
+}
+
+.form-container input:focus{
+
+    border-color:#2563eb;
+
+    background:#ffffff;
+
+    box-shadow:0 0 8px rgba(37,99,235,0.2);
+}
+
+/* ===================================
+   BUTTON
+=================================== */
+
+.form-container button{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#0f172a;
+
+    color:white;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.form-container button:hover{
+
+    background:#1e293b;
+
+    transform:translateY(-2px);
+}
+
+/* ===================================
+   SUCCESS MESSAGE
+=================================== */
+
+.success-msg{
+
+    background:#dcfce7;
+
+    color:#15803d;
+
+    padding:14px;
+
+    border-radius:10px;
+
+    margin-bottom:20px;
+
+    text-align:center;
+
+    font-weight:600;
+}
+
+/* ===================================
+   RESPONSIVE
+=================================== */
+
+@media(max-width:600px){
+
+    body{
+
+        padding:100px 15px 60px;
+    }
+
+    .form-container{
+
+        padding:30px 20px;
+    }
+
+    .form-container h1{
+
+        font-size:26px;
+    }
+}
