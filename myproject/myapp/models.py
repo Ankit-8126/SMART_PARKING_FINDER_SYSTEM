@@ -4,61 +4,87 @@ from django.utils import timezone
 
 
 class UserProfile(models.Model):
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name="profile"
+    )
 
     name = models.CharField(max_length=100)
 
-    email = models.EmailField(unique=True, null=True, blank=True)
+    email = models.EmailField(
+        unique=True,
+        null=True,
+        blank=True
+    )
 
-    # ✅ CURRENT LOCATION
-    latitude = models.FloatField(null=True, blank=True)
-    longitude = models.FloatField(null=True, blank=True)
+    latitude = models.FloatField(
+        null=True,
+        blank=True
+    )
 
-    updated_at = models.DateTimeField(auto_now=True)
+    longitude = models.FloatField(
+        null=True,
+        blank=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
 
     def __str__(self):
-        return self.email or self.user.username
+        return self.name
 
 
 class Parking(models.Model):
-
     name = models.CharField(max_length=100)
 
     address = models.CharField(max_length=200)
 
-    price = models.IntegerField()
+    price = models.PositiveIntegerField()
 
-    available_slots = models.IntegerField(default=0)
+    available_slots = models.PositiveIntegerField(
+        default=0
+    )
 
     latitude = models.FloatField()
 
     longitude = models.FloatField()
 
     def __str__(self):
-
         return self.name
 
 
 class Booking(models.Model):
+    PAYMENT_CHOICES = [
+        ("SUCCESS", "Success"),
+        ("PENDING", "Pending"),
+        ("FAILED", "Failed"),
+    ]
 
     user = models.ForeignKey(
         User,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="bookings"
     )
 
     parking = models.ForeignKey(
         Parking,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="bookings"
     )
 
     booked_at = models.DateTimeField(
         auto_now_add=True
     )
 
-    hours = models.IntegerField(default=1)
+    hours = models.PositiveIntegerField(
+        default=1
+    )
 
-    total_price = models.IntegerField(default=0)
+    total_price = models.PositiveIntegerField(
+        default=0
+    )
 
     start_time = models.DateTimeField(
         default=timezone.now
@@ -71,6 +97,7 @@ class Booking(models.Model):
 
     payment_status = models.CharField(
         max_length=20,
+        choices=PAYMENT_CHOICES,
         default="SUCCESS"
     )
 
@@ -79,5 +106,4 @@ class Booking(models.Model):
     )
 
     def __str__(self):
-
         return f"{self.user.username} - {self.parking.name}"
