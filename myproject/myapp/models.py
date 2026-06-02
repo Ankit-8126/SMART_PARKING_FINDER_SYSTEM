@@ -5,22 +5,20 @@ from django.utils import timezone
 
 class UserProfile(models.Model):
 
-    user = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE
-    )
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     name = models.CharField(max_length=100)
 
-    email = models.EmailField(
-        unique=True,
-        null=True,
-        blank=True
-    )
+    email = models.EmailField(unique=True, null=True, blank=True)
+
+    # ✅ CURRENT LOCATION
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-
-        return self.email if self.email else self.user.username
+        return self.email or self.user.username
 
 
 class Parking(models.Model):

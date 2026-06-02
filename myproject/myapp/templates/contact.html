@@ -45,19 +45,48 @@
         </div>
 
         <!-- RIGHT FORM -->
-        <div class="contact-form">
-            <h2>Send Message</h2>
+<div class="contact-form">
 
-            <input type="text" placeholder="Full Name">
-            <input type="email" placeholder="Email Address">
-            <textarea rows="5" placeholder="Your Message"></textarea>
+    <h2>Send Message</h2>
 
-            <button>Send Message 🚀</button>
-        </div>
+    {% if success %}
+        <p style="color: green;">
+            {{ success }}
+        </p>
+    {% endif %}
 
-    </section>
+    {% if error %}
+        <p style="color: red;">
+            {{ error }}
+        </p>
+    {% endif %}
 
-    {% include 'footer.html' %}
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <input type="text"
+               name="name"
+               placeholder="Full Name"
+               required>
+
+        <input type="email"
+               name="email"
+               placeholder="Email Address"
+               required>
+
+        <textarea rows="5"
+                  name="message"
+                  placeholder="Your Message"
+                  required></textarea>
+
+        <button type="submit">
+            Send Message 🚀
+        </button>
+
+    </form>
+
+</div>
 </body>
 
 </html>

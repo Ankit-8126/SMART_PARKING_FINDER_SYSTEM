@@ -1032,3 +1032,32 @@ def extend_booking(request, booking_id):
     return render(request, "extend_booking.html", {
         "booking": booking
     })
+
+
+
+import json
+from django.http import JsonResponse
+from .models import UserProfile
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def save_location(request):
+
+    if request.method == "POST":
+
+        data = json.loads(request.body)
+
+        lat = data.get("lat")
+        lng = data.get("lng")
+
+        profile, created = UserProfile.objects.get_or_create(user=request.user)
+
+        profile.latitude = lat
+        profile.longitude = lng
+        profile.save()
+
+        return JsonResponse({
+            "status": "success",
+            "lat": lat,
+            "lng": lng
+        })

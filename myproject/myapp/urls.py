@@ -51,6 +51,7 @@ path(
     name='extend_booking'
 ),
 
+path("save-location/", views.save_location, name="save_location"),
 
 
 

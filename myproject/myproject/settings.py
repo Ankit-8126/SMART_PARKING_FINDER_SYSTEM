@@ -148,14 +148,15 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # EMAIL (SAFE - NO CRASH)
 # =========================================================
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_PORT = 587
+#EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = "ankitparmar8126@gmail.com"
-EMAIL_HOST_PASSWORD = "ujqwbncsfwvhhaea"
+#EMAIL_HOST_USER = "ankitparmar8126@gmail.com"
+#EMAIL_HOST_PASSWORD = "ujqwbncsfwvhhaea"
 
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # =========================================================
 # AUTH SETTINGS
