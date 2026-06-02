@@ -155,6 +155,7 @@ EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = "ankitparmar8126@gmail.com"
 EMAIL_HOST_PASSWORD = "ujqwbncsfwvhhaea"
+EMAIL_TIMEOUT = 30
 
 
 

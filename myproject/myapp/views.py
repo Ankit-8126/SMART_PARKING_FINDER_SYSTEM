@@ -160,26 +160,22 @@ def signup(request):
         try:
 
             send_mail(
-
                 subject="Activate Your Smart Parking Account",
-
                 message=f"""
-Hi {name},
+            Hi {name},
 
-Click below link to activate account:
+            Click below link to activate account:
 
-{activation_link}
+            {activation_link}
 
-If you did not create this account,
-ignore this email.
-""",
-
+            If you did not create this account,
+            ignore this email.
+            """,
                 from_email=django_settings.EMAIL_HOST_USER,
-
                 recipient_list=[email],
-
-                fail_silently=False
+                fail_silently=False,
             )
+
 
             return render(
                 request,
