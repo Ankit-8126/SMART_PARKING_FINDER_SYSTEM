@@ -106,20 +106,19 @@ def login(request):
 # USER SIGNUP
 # =========================================================
 
-import logging
+import resend  # Top par import karein
+from django.conf import settings as django_settings
 from django.shortcuts import render
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.contrib.auth.models import User
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
-from django.core.mail import send_mail
-from django.conf import settings as django_settings
 
-# Aapka token generator import yahan rahega (e.g., from .tokens import account_activation_token)
+# Jo bhi aapka token generator import hai wahi rakhein
 
-# Error logging setup
-logger = logging.getLogger(__name__)
+# Resend API key ko initialize karein
+resend.api_key = django_settings.RESEND_API_KEY
 
 
 def signup(request):
@@ -131,71 +130,59 @@ def signup(request):
         try:
             validate_email(email)
         except ValidationError:
-            return render(
-                request,
-                "signup.html",
-                {"error": "Invalid email format"}
-            )
+            return render(request, "signup.html", {"error": "Invalid email format"})
 
         if User.objects.filter(username=email).exists():
-            return render(
-                request,
-                "signup.html",
-                {"error": "Email already exists"}
-            )
+            return render(request, "signup.html", {"error": "Email already exists"})
 
-        # 1. User create karein
+        # 1. User ko INACTIVE create karein taaki bina link click kiye login na ho sake
         user = User.objects.create_user(
             username=email,
             first_name=name,
             email=email,
             password=password
         )
-
-        # 🚨 TEMPORARY TESTING FIX: Kyunki email nahi jaa raha, user ko direct active kar rahe hain
-        # Taaki aap dashboard check kar sakein. Jab production pe jayein toh isse False kar dena.
-        user.is_active = True
+        user.is_active = False
         user.save()
 
-        # 2. Activation link generate karein (for future use/logging)
+        # 2. Link generation code
         uid = urlsafe_base64_encode(force_bytes(user.pk))
-        try:
-            token = account_activation_token.make_token(user)
-            activation_link = request.build_absolute_uri(f"/activate/{uid}/{token}/")
-        except NameError:
-            # Agar account_activation_token abhi setup nahi hai toh safe fallback
-            activation_link = "Token system not configured yet"
+        token = account_activation_token.make_token(user)
+        activation_link = request.build_absolute_uri(f"/activate/{uid}/{token}/")
 
-        # 3. Email sending in a safe try-except block
+        # 3. Official Resend API call
         try:
-            send_mail(
-                subject="Activate Your Smart Parking Account",
-                message=f"Hi {name},\n\nClick below link to activate account:\n\n{activation_link}",
-                from_email=django_settings.EMAIL_HOST_USER,
-                recipient_list=[email],
-                fail_silently=False,
-            )
+            params = {
+                "from": "Smart Parking <onboarding@resend.dev>",
+                "to": [email],
+                "subject": "Activate Your Smart Parking Account",
+                "html": f"""
+                <h3>Hi {name},</h3>
+                <p>Thank you for registering in our Smart Parking Finder System.</p>
+                <p>Please click the link below to activate your account:</p>
+                <a href="{activation_link}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; display: inline-block; border-radius: 4px;">Activate Account</a>
+                <br><br>
+                <p>If the button doesn't work, copy-paste this URL into your browser:</p>
+                <p>{activation_link}</p>
+                """
+            }
 
-            return render(
-                request,
-                "signup.html",
-                {"message": "Signup successful! Verification link sent to your email."}
-            )
+            # API Request trigger
+            resend.Emails.send(params)
+
+            return render(request, "signup.html", {
+                "message": "Activation link has been sent to your email successfully!"
+            })
 
         except Exception as e:
-            # 💡 LOOPHOLE FIXED HERE: Render par network unreachable aane par bhi user ka registration block nahi hoga.
-            # Hum error ko console/logs me print kar denge aur user ko dashboard par jaane denge.
-            logger.error(f"Render Network Blocked SMTP Email: {str(e)}")
-
-            return render(
-                request,
-                "signup.html",
-                {
-                    "message": "Signup successful! (Note: Email simulation activated due to network restriction, you can directly login now)."
-                }
-            )
+            # Agar network fail ho ya API fail ho, toh user rollback (delete) karein taaki re-try ho sake
+            user.delete()
+            return render(request, "signup.html", {
+                "error": f"Email delivery failed: {str(e)}. Please try again later."
+            })
 
     return render(request, "signup.html")
+
 
 # =========================================================
 # ACTIVATE ACCOUNT
