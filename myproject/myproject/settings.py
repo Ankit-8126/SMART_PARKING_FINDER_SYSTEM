@@ -165,13 +165,7 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', "ankitparmar8126@gmail.com")
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', "ujqwbncsfwvhhaea")
 EMAIL_TIMEOUT = 15
 
-# =========================================================
-# RESEND API CONFIGURATION (FOR LIVE EMAIL LINK)
-# =========================================================
-import os
 
-# Apni Resend Dashboard se mili key yahan dalein ya Render Environment me set karein
-RESEND_API_KEY = os.environ.get('RESEND_API_KEY', 're_7DoEDvCL_8Np7qAH8w6KH1o54dAbqyJjZ')
 
 
 # =========================================================
